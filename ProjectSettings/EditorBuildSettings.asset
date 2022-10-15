@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/FujiDevelop.unity
+    guid: 7760e291c99d877439a83e3705e2f6ac
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 939a171b45318b843be91164cf163528,
+      type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: dc5760d308f7407409e760c46ca07d77,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e96be43586a4ee74f8aaa9832fb7f5a8,
+      type: 2}
     path: Assets/Scenes/ItokaDevelop.unity
     guid: a9ebae4e741e6b741965a5c3390a681a
   - enabled: 0
