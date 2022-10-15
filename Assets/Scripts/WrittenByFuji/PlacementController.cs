@@ -8,10 +8,10 @@ using TMPro;
 
 public class PlacementController : MonoBehaviour
 {
-    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, spawnButton, planeUpButton, planeDownButton;
+    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, spawnButton, clearButton, planeUpButton, planeDownButton, hostButton, resolveButton;
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
-    private ARAnchorManager arAnchorManager;
+    //private ARAnchorManager arAnchorManager;
     private List<ARAnchor> anchors = new List<ARAnchor>();
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
     [SerializeField] private GameObject placedPrefab;
@@ -40,16 +40,20 @@ public class PlacementController : MonoBehaviour
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arRaycastManager = GetComponent<ARRaycastManager>();
-        arAnchorManager = GetComponent<ARAnchorManager>();
+        //arAnchorManager = GetComponent<ARAnchorManager>();
         arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
-        if(setPlaneButton != null && clearPlaneButton!= null && toggleButton != null && spawnButton != null && planeUpButton != null && planeDownButton != null)
+        if(setPlaneButton != null && clearPlaneButton!= null && toggleButton != null && spawnButton != null && clearButton != null && planeUpButton != null && planeDownButton != null && hostButton != null && resolveButton != null)
         {
             setPlaneButton.onClick.AddListener(SetSelectedPlane);
             clearPlaneButton.onClick.AddListener(ClearUnselectedPlane);
             toggleButton.onClick.AddListener(TogglePlaneDetection);
             spawnButton.onClick.AddListener(SpawnAtTouchPoint);
+            clearButton.onClick.AddListener(ClearObject);
             planeUpButton.onClick.AddListener(() => AdjustPlaneHeight(1));
             planeDownButton.onClick.AddListener(() => AdjustPlaneHeight(-1));
+
+            hostButton.onClick.AddListener(arCloudAnchorManager.HostAnchor);
+            resolveButton.onClick.AddListener(arCloudAnchorManager.Resolve);
         }
     }
 
@@ -146,15 +150,24 @@ public class PlacementController : MonoBehaviour
             if (spawnedObject == null)
             {
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
-                //ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
-                //anchors.Add(anchor);
-                //arCloudAnchorManager.QueueAnchor(anchor);
+                ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
+                anchors.Add(anchor);
+                arCloudAnchorManager.QueueAnchor(anchor);
             }
             else
             {
                 spawnedObject.position = hitPose.position;
                 spawnedObject.rotation = hitPose.rotation;
             }
+        }
+    }
+
+    private void ClearObject()
+    {
+        if(spawnedObject != null)
+        {
+            Destroy(spawnedObject.gameObject);
+            spawnedObject = null;
         }
     }
 
@@ -172,9 +185,9 @@ public class PlacementController : MonoBehaviour
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
         }
     }
-    public void ReCreatePlacement()
+    public void ReCreatePlacement(Transform transform)
     {
-        spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
-        ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
+        spawnedObject = Instantiate(placedPrefab, transform.position, transform.rotation).transform;
+        spawnedObject.parent = transform;
     }
 }
