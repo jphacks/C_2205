@@ -6,13 +6,13 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using TMPro;
 
-[RequireComponent(typeof(ARRaycastManager))]
-
 public class PlacementController : MonoBehaviour
 {
     [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, spawnButton, planeUpButton, planeDownButton;
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
+    private ARAnchorManager arAnchorManager;
+    private List<ARAnchor> anchors = new List<ARAnchor>();
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
     [SerializeField] private GameObject placedPrefab;
 
@@ -142,6 +142,7 @@ public class PlacementController : MonoBehaviour
             if (spawnedObject == null)
             {
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
+                var anchor = arAnchorManager.AddAnchor(new Pose(hitPose.position, hitPose.rotation));
             }
             else
             {
