@@ -13,13 +13,15 @@ public class PlacementController : MonoBehaviour
     private ARRaycastManager arRaycastManager;
     private ARAnchorManager arAnchorManager;
     private List<ARAnchor> anchors = new List<ARAnchor>();
-    static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
     [SerializeField] private GameObject placedPrefab;
 
     private ARPlane planeSelected, basePlane;
     [SerializeField] private Material defaultMaterial, selectedPlaneMaterial;
     private Pose hitPose;
     private Transform spawnedObject;
+
+    ARCloudAnchorManager arCloudAnchorManager;
 
     public GameObject PlacedPrefab
     {
@@ -38,6 +40,8 @@ public class PlacementController : MonoBehaviour
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arRaycastManager = GetComponent<ARRaycastManager>();
+        arAnchorManager = GetComponent<ARAnchorManager>();
+        arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
         if(setPlaneButton != null && clearPlaneButton!= null && toggleButton != null && spawnButton != null && planeUpButton != null && planeDownButton != null)
         {
             setPlaneButton.onClick.AddListener(SetSelectedPlane);
@@ -142,7 +146,9 @@ public class PlacementController : MonoBehaviour
             if (spawnedObject == null)
             {
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
-                var anchor = arAnchorManager.AddAnchor(new Pose(hitPose.position, hitPose.rotation));
+                //ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
+                //anchors.Add(anchor);
+                //arCloudAnchorManager.QueueAnchor(anchor);
             }
             else
             {
@@ -165,5 +171,10 @@ public class PlacementController : MonoBehaviour
         {
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
         }
+    }
+    public void ReCreatePlacement()
+    {
+        spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
+        ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
     }
 }

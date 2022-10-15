@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using Google.XR.ARCoreExtensions;
@@ -14,6 +15,7 @@ public class ARCloudAnchorManager : MonoBehaviour
     private ARAnchorManager arAnchorManager = null;
     private ARAnchor pendingHostAnchor = null;
     private ARCloudAnchor cloudAnchor = null;
+    private PlacementController placementController = null;
     private string anchorToResolve;
     private bool anchorUpdateInProgress = false, anchorResolveInProgress = false;
     private float safeToResolvePassed = 0;
@@ -22,7 +24,7 @@ public class ARCloudAnchorManager : MonoBehaviour
     private void Awake()
     {
         anchorCreatedEvent = new AnchorCreatedEvent();
-        anchorCreatedEvent.AddListener((t) => PlacementController.Instance.ReCreatePlacement(t));
+        //anchorCreatedEvent.AddListener((t) => placementController.ReCreatePlacement(t));
     }
 
     private Pose GetCameraPose()
@@ -33,7 +35,7 @@ public class ARCloudAnchorManager : MonoBehaviour
     #region Cloud Anchor Cycle
     public void QueueAnchor(ARAnchor anchor)
     {
-
+        pendingHostAnchor = anchor;
     }
     public void HostAnchor()
     {
