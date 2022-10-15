@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ItokaDevelop.unity
     guid: a9ebae4e741e6b741965a5c3390a681a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/hizumo.unity
     guid: 20f009c65dbbea04386660716f85a6f7
   - enabled: 0
