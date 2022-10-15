@@ -118,7 +118,7 @@ public class OpenDiveSensor : MonoBehaviour
 		// Java part
 		DiveJava.init ();
 		dive_set_path(Application.persistentDataPath);
-		Network.logLevel = NetworkLogLevel.Full;
+		//Network.logLevel = NetworkLogLevel.Full;
 		use_udp(1);
 		initialize_sensors();
 		int err = get_error();
