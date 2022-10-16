@@ -6,62 +6,31 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using TMPro;
 
-public class PlacementController : MonoBehaviour
+public class CreateBasePlane : MonoBehaviour
 {
-    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, setAnchorButton, planeUpButton, planeDownButton, hostButton, resolveButton, clearButton;
+    [SerializeField] private Button setPlaneButton, planeUpButton, planeDownButton, finishSettingButton;
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
-    //private ARAnchorManager arAnchorManager;
-    private List<ARAnchor> anchors = new List<ARAnchor>();
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-    [SerializeField] private GameObject placedPrefab;
-
     private ARPlane planeSelected, basePlane;
     [SerializeField] private Material defaultMaterial, selectedPlaneMaterial;
-    private Pose hitPose;
-    private Transform spawnedObject;
+    [SerializeField] private GameObject testObject,initialCircle;
+    [HideInInspector] public Transform spawnedTestObject;
 
-    ARCloudAnchorManager arCloudAnchorManager;
-
-    public GameObject PlacedPrefab
-    {
-        get
-        {
-            return placedPrefab;
-        }
-        set
-        {
-            placedPrefab = value;
-        }
-    }
 
     //起動時、コンポーネント取得、ボタンに機能付与
     void Awake()
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arRaycastManager = GetComponent<ARRaycastManager>();
-        arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
 
-        //ホスト側のボタン、基準平面設定、不要な平面除去、検出機能オンオフ、アンカー設置、ホスト
-        if (setPlaneButton != null && clearPlaneButton != null && toggleButton != null && setAnchorButton != null && planeUpButton != null && planeDownButton　&& hostButton != null)
+        //ホスト側のボタン、基準平面設定、基準平面高さ調整、調整終了
+        if (setPlaneButton != null && planeUpButton != null && planeDownButton && finishSettingButton != null)
         {
             setPlaneButton.onClick.AddListener(SetBasePlane);
-            clearPlaneButton.onClick.AddListener(ClearUnselectedPlane);
-            toggleButton.onClick.AddListener(TogglePlaneDetection);
-            setAnchorButton.onClick.AddListener(SetAnchorAtTouchPoint);
             planeUpButton.onClick.AddListener(() => AdjustPlaneHeight(1));
             planeDownButton.onClick.AddListener(() => AdjustPlaneHeight(-1));
-            hostButton.onClick.AddListener(arCloudAnchorManager.HostAnchor);
-        }
-        //
-        if (resolveButton != null)
-        {
-            resolveButton.onClick.AddListener(arCloudAnchorManager.Resolve);
-        }
-        //デバッグ、アンカーオブジェクト削除
-        if (clearButton != null)
-        {
-            clearButton.onClick.AddListener(ClearObject);
+            finishSettingButton.onClick.AddListener(FinishSetting);
         }
     }
 
@@ -109,12 +78,9 @@ public class PlacementController : MonoBehaviour
             SetTouchPositionAndPlane();
         }
     }
-
+    //平面選択
     private void SetTouchPositionAndPlane()
     {
-        //最初にヒットしたposeを格納
-        hitPose = hits[0].pose;
-
         //基準平面を設定していないなら
         if (basePlane == null)
         {
@@ -126,66 +92,39 @@ public class PlacementController : MonoBehaviour
             planeSelected = arPlaneManager.GetPlane(hits[0].trackableId);
             planeSelected.gameObject.GetComponent<MeshRenderer>().material = selectedPlaneMaterial;
         }
+        //マーカーが生成されていないならタップ位置に生成、Transform型で格納し平面を親とする。
+        if (spawnedTestObject == null)
+        {
+            spawnedTestObject = Instantiate(testObject, hits[0].pose.position, Quaternion.identity).transform;
+            spawnedTestObject.parent = planeSelected.transform;
+        }
+        //二回目以降なら生成はせず移動で
+        else
+        {
+            spawnedTestObject.position = hits[0].pose.position;
+            spawnedTestObject.parent = planeSelected.transform;
+        }
     }
+
     //基準平面設定ボタン
     private void SetBasePlane()
     {
+        //基準平面が設定されていないなら設定
         if (basePlane == null)
         {
             basePlane = planeSelected;
-            setPlaneButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unset Base Plane";
         }
-        else
-        {
-            basePlane.GetComponent<MeshRenderer>().material = defaultMaterial;
-            basePlane = null;
-            setPlaneButton.GetComponentInChildren<TextMeshProUGUI>().text = "Set Base Plane";
-        }
-    }
-    private void ClearUnselectedPlane()
-    {
+        //基準平面でない平面を非表示
         foreach (ARPlane plane in arPlaneManager.trackables)
         {
             plane.gameObject.SetActive(false);
-            basePlane.gameObject.SetActive(true);
         }
-    }
-    //最後の有効タッチの場所に生成、1体まで
-    private void SetAnchorAtTouchPoint()
-    {
-        if (hitPose != null)
-        {
-            if (spawnedObject == null)
-            {
-                spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
-                ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
-                anchors.Add(anchor);
-                arCloudAnchorManager.QueueAnchor(anchor);
-            }
-            else
-            {
-                spawnedObject.position = hitPose.position;
-                spawnedObject.rotation = hitPose.rotation;
-            }
-        }
-    }
+        basePlane.gameObject.SetActive(true);
 
-    private void ClearObject()
-    {
-        if(spawnedObject != null)
-        {
-            Destroy(spawnedObject.gameObject);
-            spawnedObject = null;
-        }
+        //平面検出機能を無効化
+        arPlaneManager.enabled = false;
     }
-
-    //平面検出オンオフ
-    private void TogglePlaneDetection()
-    {
-        ClearUnselectedPlane();
-        arPlaneManager.enabled = !arPlaneManager.enabled;
-        toggleButton.GetComponentInChildren<TextMeshProUGUI>().text = arPlaneManager.enabled ? "Disable Detection" : "Enable Detection";
-    }
+    
     //平面高さ調整
     private void AdjustPlaneHeight(int vec)
     {
@@ -194,10 +133,12 @@ public class PlacementController : MonoBehaviour
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
         }
     }
-    //クラウドアンカー読み込み時の生成
-    public void ReCreatePlacement(Transform transform)
+
+    //設定終了、円形の初期フィールドを配置、マーカーをローカルアンカーとする
+    private void FinishSetting()
     {
-        spawnedObject = Instantiate(placedPrefab, transform.position, transform.rotation).transform;
-        spawnedObject.parent = transform;
+        basePlane.gameObject.SetActive(false);
+        Instantiate(initialCircle, spawnedTestObject.position, Quaternion.identity);
+        spawnedTestObject.gameObject.AddComponent<ARAnchor>();
     }
 }

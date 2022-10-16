@@ -160,7 +160,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.KuroiShikaku.kehaiXgiRi
     Standalone: com.UnityTechnologies.com.unity.template-starter-kit
-    iPhone: tmy.jack.SignSlashXR
+    iPhone: com.KuroiShikaku.kehaiXgiRi
   buildNumber:
     Standalone: 0
     iPhone: 0

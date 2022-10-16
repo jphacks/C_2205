@@ -15,7 +15,7 @@ public class ARCloudAnchorManager : MonoBehaviour
     private ARAnchorManager arAnchorManager = null;
     private ARAnchor pendingHostAnchor = null;
     private ARCloudAnchor cloudAnchor = null;
-    private PlacementController placementController = null;
+    private CreateBasePlane createBasePlane = null;
     private string anchorIDtoResolve;
     private bool anchorHostInProgress = false, anchorResolveInProgress = false;
     private float safeToResolvePassed = 0;
@@ -28,8 +28,6 @@ public class ARCloudAnchorManager : MonoBehaviour
     private void Awake()
     {
         arAnchorManager = GetComponent<ARAnchorManager>();
-        cloudAnchorCreatedEvent = new cloudAnchorCreatedEvent();
-        cloudAnchorCreatedEvent.AddListener((t) => placementController.ReCreatePlacement(t));
     }
 
     private Pose GetCameraPose()
