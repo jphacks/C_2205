@@ -42,7 +42,7 @@ public class PlacementController : MonoBehaviour
         arRaycastManager = GetComponent<ARRaycastManager>();
         arAnchorManager = GetComponent<ARAnchorManager>();
         arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
-        if(setPlaneButton != null && clearPlaneButton!= null && toggleButton != null && spawnButton != null && planeUpButton != null && planeDownButton != null)
+        if (setPlaneButton != null && clearPlaneButton != null && toggleButton != null && spawnButton != null && planeUpButton != null && planeDownButton != null)
         {
             setPlaneButton.onClick.AddListener(SetSelectedPlane);
             clearPlaneButton.onClick.AddListener(ClearUnselectedPlane);
@@ -56,7 +56,7 @@ public class PlacementController : MonoBehaviour
     //UIをタッチしていない有効なタッチであるかどうか、有効ならばタッチした場所を出力する
     bool IsValidTouch(out Vector2 touchPosition)
     {
-        if(Input.touchCount > 0)
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
@@ -92,7 +92,7 @@ public class PlacementController : MonoBehaviour
         {
             return;
         }
-        if (arRaycastManager.Raycast(touchPosition,hits,UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+        if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
         {
             SetTouchPositionAndPlane();
         }
@@ -167,7 +167,7 @@ public class PlacementController : MonoBehaviour
     }
     private void AdjustPlaneHeight(int vec)
     {
-        if(basePlane != null)
+        if (basePlane != null)
         {
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
         }
