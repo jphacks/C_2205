@@ -8,10 +8,10 @@ using TMPro;
 
 public class PlacementController : MonoBehaviour
 {
-    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, spawnButton, planeUpButton, planeDownButton;
+    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, setAnchorButton, planeUpButton, planeDownButton, hostButton, resolveButton, clearButton;
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
-    private ARAnchorManager arAnchorManager;
+    //private ARAnchorManager arAnchorManager;
     private List<ARAnchor> anchors = new List<ARAnchor>();
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
     [SerializeField] private GameObject placedPrefab;
@@ -35,47 +35,59 @@ public class PlacementController : MonoBehaviour
         }
     }
 
-    //‹N“®AƒRƒ“ƒ|[ƒlƒ“ƒgæ“¾Aƒ{ƒ^ƒ“‚É‹@”\•t—^
+    //èµ·å‹•æ™‚ã€ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå–å¾—ã€ãƒœã‚¿ãƒ³ã«æ©Ÿèƒ½ä»˜ä¸
     void Awake()
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arRaycastManager = GetComponent<ARRaycastManager>();
-        arAnchorManager = GetComponent<ARAnchorManager>();
         arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
-        if (setPlaneButton != null && clearPlaneButton != null && toggleButton != null && spawnButton != null && planeUpButton != null && planeDownButton != null)
+
+        //ãƒ›ã‚¹ãƒˆå´ã®ãƒœã‚¿ãƒ³ã€åŸºæº–å¹³é¢è¨­å®šã€ä¸è¦ãªå¹³é¢é™¤å»ã€æ¤œå‡ºæ©Ÿèƒ½ã‚ªãƒ³ã‚ªãƒ•ã€ã‚¢ãƒ³ã‚«ãƒ¼è¨­ç½®ã€ãƒ›ã‚¹ãƒˆ
+        if (setPlaneButton != null && clearPlaneButton != null && toggleButton != null && setAnchorButton != null && planeUpButton != null && planeDownButtonã€€&& hostButton != null)
         {
-            setPlaneButton.onClick.AddListener(SetSelectedPlane);
+            setPlaneButton.onClick.AddListener(SetBasePlane);
             clearPlaneButton.onClick.AddListener(ClearUnselectedPlane);
             toggleButton.onClick.AddListener(TogglePlaneDetection);
-            spawnButton.onClick.AddListener(SpawnAtTouchPoint);
+            setAnchorButton.onClick.AddListener(SetAnchorAtTouchPoint);
             planeUpButton.onClick.AddListener(() => AdjustPlaneHeight(1));
             planeDownButton.onClick.AddListener(() => AdjustPlaneHeight(-1));
+            hostButton.onClick.AddListener(arCloudAnchorManager.HostAnchor);
+        }
+        //
+        if (resolveButton != null)
+        {
+            resolveButton.onClick.AddListener(arCloudAnchorManager.Resolve);
+        }
+        //ãƒ‡ãƒãƒƒã‚°ã€ã‚¢ãƒ³ã‚«ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå‰Šé™¤
+        if (clearButton != null)
+        {
+            clearButton.onClick.AddListener(ClearObject);
         }
     }
 
-    //UI‚ğƒ^ƒbƒ`‚µ‚Ä‚¢‚È‚¢—LŒø‚Èƒ^ƒbƒ`‚Å‚ ‚é‚©‚Ç‚¤‚©A—LŒø‚È‚ç‚Îƒ^ƒbƒ`‚µ‚½êŠ‚ğo—Í‚·‚é
+    //UIã‚’ã‚¿ãƒƒãƒã—ã¦ã„ãªã„æœ‰åŠ¹ãªã‚¿ãƒƒãƒã§ã‚ã‚‹ã‹ã©ã†ã‹ã€æœ‰åŠ¹ãªã‚‰ã°ã‚¿ãƒƒãƒã—ãŸå ´æ‰€ã‚’å‡ºåŠ›ã™ã‚‹
     bool IsValidTouch(out Vector2 touchPosition)
     {
-        if (Input.touchCount > 0)
+        if(Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                //GameObject‚È‚çUI‚Éƒ^ƒbƒ`‚µ‚Ä‚¢‚È‚¢‚ÆŠm’è‚Å‚«‚é‚Ì‚Åtrue
+                //GameObjectãªã‚‰UIã«ã‚¿ãƒƒãƒã—ã¦ã„ãªã„ã¨ç¢ºå®šã§ãã‚‹ã®ã§true
                 if (EventSystem.current.IsPointerOverGameObject())
                 {
                     touchPosition = touch.position;
                     return true;
                 }
-                //ƒ^ƒbƒ`‚µ‚½“_‚ÉƒCƒxƒ“ƒg‚ª‚ ‚é‚È‚çRaycastŒ‹‰Ê‚ÉŠi”[AŒ‹‰Ê‚ª0‚È‚çUI‚ÉG‚ê‚Ä‚¢‚È‚¢B
+                //ã‚¿ãƒƒãƒã—ãŸç‚¹ã«ã‚¤ãƒ™ãƒ³ãƒˆãŒã‚ã‚‹ãªã‚‰Raycastçµæœã«æ ¼ç´ã€çµæœãŒ0ãªã‚‰UIã«è§¦ã‚Œã¦ã„ãªã„ã€‚
                 PointerEventData eventPosition = new PointerEventData(EventSystem.current);
 
-                //Raycast‚Ìn“_‚Æ‚·‚é‚½‚ßˆÊ’u‚ğİ’è‚·‚é
+                //Raycastã®å§‹ç‚¹ã¨ã™ã‚‹ãŸã‚ä½ç½®ã‚’è¨­å®šã™ã‚‹
                 eventPosition.position = touch.position;
                 List<RaycastResult> results = new List<RaycastResult>();
                 EventSystem.current.RaycastAll(eventPosition, results);
 
-                //o—Í‚·‚étouchPosition‚ÍRaycast‚ÌŒ‹‰Ê‚É‚æ‚é
+                //å‡ºåŠ›ã™ã‚‹touchPositionã¯Raycastã®çµæœã«ã‚ˆã‚‹
                 touchPosition = results.Count == 0 ? touch.position : default;
                 return results.Count == 0;
             }
@@ -87,12 +99,12 @@ public class PlacementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //—LŒø‚Èƒ^ƒbƒ`‚È‚ç‚ÎêŠ‚ÆARPlane‚ğæ“¾
+        //æœ‰åŠ¹ãªã‚¿ãƒƒãƒãªã‚‰ã°å ´æ‰€ã¨ARPlaneã‚’å–å¾—
         if (!IsValidTouch(out Vector2 touchPosition))
         {
             return;
         }
-        if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+        if (arRaycastManager.Raycast(touchPosition,hits,UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
         {
             SetTouchPositionAndPlane();
         }
@@ -100,13 +112,13 @@ public class PlacementController : MonoBehaviour
 
     private void SetTouchPositionAndPlane()
     {
-        //Å‰‚Éƒqƒbƒg‚µ‚½pose‚ğŠi”[
+        //æœ€åˆã«ãƒ’ãƒƒãƒˆã—ãŸposeã‚’æ ¼ç´
         hitPose = hits[0].pose;
 
-        //Šî€•½–Ê‚ğİ’è‚µ‚Ä‚¢‚È‚¢‚È‚ç
+        //åŸºæº–å¹³é¢ã‚’è¨­å®šã—ã¦ã„ãªã„ãªã‚‰
         if (basePlane == null)
         {
-            //Å‰‚Éƒqƒbƒg‚µ‚½ARPlane‚ğŠi”[Aƒ}ƒeƒŠƒAƒ‹‚ğ•Ê‚Ì‚É
+            //æœ€åˆã«ãƒ’ãƒƒãƒˆã—ãŸARPlaneã‚’æ ¼ç´ã€ãƒãƒ†ãƒªã‚¢ãƒ«ã‚’åˆ¥ã®ã«
             foreach (ARPlane plane in arPlaneManager.trackables)
             {
                 plane.GetComponent<MeshRenderer>().material = defaultMaterial;
@@ -115,8 +127,8 @@ public class PlacementController : MonoBehaviour
             planeSelected.gameObject.GetComponent<MeshRenderer>().material = selectedPlaneMaterial;
         }
     }
-    //Šî€•½–Êİ’èƒ{ƒ^ƒ“
-    private void SetSelectedPlane()
+    //åŸºæº–å¹³é¢è¨­å®šãƒœã‚¿ãƒ³
+    private void SetBasePlane()
     {
         if (basePlane == null)
         {
@@ -138,17 +150,17 @@ public class PlacementController : MonoBehaviour
             basePlane.gameObject.SetActive(true);
         }
     }
-    //ÅŒã‚Ì—LŒøƒ^ƒbƒ`‚ÌêŠ‚É¶¬A1‘Ì‚Ü‚Å
-    private void SpawnAtTouchPoint()
+    //æœ€å¾Œã®æœ‰åŠ¹ã‚¿ãƒƒãƒã®å ´æ‰€ã«ç”Ÿæˆã€1ä½“ã¾ã§
+    private void SetAnchorAtTouchPoint()
     {
         if (hitPose != null)
         {
             if (spawnedObject == null)
             {
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
-                //ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
-                //anchors.Add(anchor);
-                //arCloudAnchorManager.QueueAnchor(anchor);
+                ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
+                anchors.Add(anchor);
+                arCloudAnchorManager.QueueAnchor(anchor);
             }
             else
             {
@@ -158,23 +170,34 @@ public class PlacementController : MonoBehaviour
         }
     }
 
-    //•½–ÊŒŸoƒIƒ“ƒIƒt
+    private void ClearObject()
+    {
+        if(spawnedObject != null)
+        {
+            Destroy(spawnedObject.gameObject);
+            spawnedObject = null;
+        }
+    }
+
+    //å¹³é¢æ¤œå‡ºã‚ªãƒ³ã‚ªãƒ•
     private void TogglePlaneDetection()
     {
         ClearUnselectedPlane();
         arPlaneManager.enabled = !arPlaneManager.enabled;
         toggleButton.GetComponentInChildren<TextMeshProUGUI>().text = arPlaneManager.enabled ? "Disable Detection" : "Enable Detection";
     }
+    //å¹³é¢é«˜ã•èª¿æ•´
     private void AdjustPlaneHeight(int vec)
     {
-        if (basePlane != null)
+        if(basePlane != null)
         {
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
         }
     }
-    public void ReCreatePlacement()
+    //ã‚¯ãƒ©ã‚¦ãƒ‰ã‚¢ãƒ³ã‚«ãƒ¼èª­ã¿è¾¼ã¿æ™‚ã®ç”Ÿæˆ
+    public void ReCreatePlacement(Transform transform)
     {
-        spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation).transform;
-        ARAnchor anchor = spawnedObject.gameObject.AddComponent<ARAnchor>();
+        spawnedObject = Instantiate(placedPrefab, transform.position, transform.rotation).transform;
+        spawnedObject.parent = transform;
     }
 }
