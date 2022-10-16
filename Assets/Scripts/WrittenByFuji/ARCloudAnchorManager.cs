@@ -21,10 +21,13 @@ public class ARCloudAnchorManager : MonoBehaviour
     private float safeToResolvePassed = 0;
     private cloudAnchorCreatedEvent cloudAnchorCreatedEvent = null;
 
-    [SerializeField] private TextMeshProUGUI DebugText;
+    //ホスト前に30秒程のスキャンが推奨される。
+    FeatureMapQuality quality;
+    [SerializeField] private TextMeshProUGUI debugText,scanQuality;
 
     private void Awake()
     {
+        arAnchorManager = GetComponent<ARAnchorManager>();
         cloudAnchorCreatedEvent = new cloudAnchorCreatedEvent();
         cloudAnchorCreatedEvent.AddListener((t) => placementController.ReCreatePlacement(t));
     }
@@ -41,17 +44,13 @@ public class ARCloudAnchorManager : MonoBehaviour
     }
     public void HostAnchor()
     {
-        DebugText.text = "HostAnchor call in progress";
-
-        //ホスト前に30秒程のスキャンが推奨される。
-        FeatureMapQuality quality = arAnchorManager.EstimateFeatureMapQualityForHosting(GetCameraPose());
-        DebugText.text = $"Feature Map Quality: {quality}";
-
+        debugText.text = "HostAnchor call in progress";
+        quality = arAnchorManager.EstimateFeatureMapQualityForHosting(GetCameraPose());
         //とっておいたアンカーをホスト、有効期限1日
         cloudAnchor = arAnchorManager.HostCloudAnchor(pendingHostAnchor, 1);
         if(cloudAnchor== null)
         {
-            DebugText.text = "Unable to host cloud anchor";
+            debugText.text = "Unable to host cloud anchor";
         }
         else
         {
@@ -60,12 +59,12 @@ public class ARCloudAnchorManager : MonoBehaviour
     }
     public void Resolve()
     {
-        DebugText.text = "Resolve call in progress";
+        debugText.text = "Resolve call in progress";
         cloudAnchor = arAnchorManager.ResolveCloudAnchorId(anchorIDtoResolve);
 
         if (cloudAnchor == null)
         {
-            DebugText.text = $"Unable to resolve cloud anchor:{anchorIDtoResolve}";
+            debugText.text = $"Unable to resolve cloud anchor:{anchorIDtoResolve}";
         }
         else
         {
@@ -82,7 +81,7 @@ public class ARCloudAnchorManager : MonoBehaviour
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
-            DebugText.text = $"Error while hosting: {cloudAnchorState}";
+            debugText.text = $"Error while hosting: {cloudAnchorState}";
             anchorHostInProgress = false;
         }
     }
@@ -96,7 +95,7 @@ public class ARCloudAnchorManager : MonoBehaviour
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
-            DebugText.text = $"Error while resolving: {cloudAnchorState}";
+            debugText.text = $"Error while resolving: {cloudAnchorState}";
             anchorResolveInProgress = false;
         }
     }
@@ -105,6 +104,8 @@ public class ARCloudAnchorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        scanQuality.text = $"Feature Map Quality: {quality}";
+
         //ホストチェック
         if (anchorHostInProgress)
         {
@@ -118,7 +119,7 @@ public class ARCloudAnchorManager : MonoBehaviour
             safeToResolvePassed = resolveAnchorPassedTimeout;
             if (!string.IsNullOrEmpty(anchorIDtoResolve))
             {
-                DebugText.text = $"Resolving Anchor Id: {anchorIDtoResolve}";
+                debugText.text = $"Resolving Anchor Id: {anchorIDtoResolve}";
                 CheckResolveProgress();
             }
         }

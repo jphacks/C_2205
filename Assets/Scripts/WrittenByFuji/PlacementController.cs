@@ -8,7 +8,7 @@ using TMPro;
 
 public class PlacementController : MonoBehaviour
 {
-    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, spawnButton, clearButton, planeUpButton, planeDownButton, hostButton, resolveButton;
+    [SerializeField] private Button setPlaneButton, clearPlaneButton, toggleButton, setAnchorButton, planeUpButton, planeDownButton, hostButton, resolveButton, clearButton;
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
     //private ARAnchorManager arAnchorManager;
@@ -40,20 +40,28 @@ public class PlacementController : MonoBehaviour
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arRaycastManager = GetComponent<ARRaycastManager>();
-        //arAnchorManager = GetComponent<ARAnchorManager>();
         arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
-        if(setPlaneButton != null && clearPlaneButton!= null && toggleButton != null && spawnButton != null && clearButton != null && planeUpButton != null && planeDownButton != null && hostButton != null && resolveButton != null)
+
+        //ホスト側のボタン、基準平面設定、不要な平面除去、検出機能オンオフ、アンカー設置、ホスト
+        if (setPlaneButton != null && clearPlaneButton != null && toggleButton != null && setAnchorButton != null && planeUpButton != null && planeDownButton　&& hostButton != null)
         {
-            setPlaneButton.onClick.AddListener(SetSelectedPlane);
+            setPlaneButton.onClick.AddListener(SetBasePlane);
             clearPlaneButton.onClick.AddListener(ClearUnselectedPlane);
             toggleButton.onClick.AddListener(TogglePlaneDetection);
-            spawnButton.onClick.AddListener(SpawnAtTouchPoint);
-            clearButton.onClick.AddListener(ClearObject);
+            setAnchorButton.onClick.AddListener(SetAnchorAtTouchPoint);
             planeUpButton.onClick.AddListener(() => AdjustPlaneHeight(1));
             planeDownButton.onClick.AddListener(() => AdjustPlaneHeight(-1));
-
             hostButton.onClick.AddListener(arCloudAnchorManager.HostAnchor);
+        }
+        //
+        if (resolveButton != null)
+        {
             resolveButton.onClick.AddListener(arCloudAnchorManager.Resolve);
+        }
+        //デバッグ、アンカーオブジェクト削除
+        if (clearButton != null)
+        {
+            clearButton.onClick.AddListener(ClearObject);
         }
     }
 
@@ -120,7 +128,7 @@ public class PlacementController : MonoBehaviour
         }
     }
     //基準平面設定ボタン
-    private void SetSelectedPlane()
+    private void SetBasePlane()
     {
         if (basePlane == null)
         {
@@ -143,7 +151,7 @@ public class PlacementController : MonoBehaviour
         }
     }
     //最後の有効タッチの場所に生成、1体まで
-    private void SpawnAtTouchPoint()
+    private void SetAnchorAtTouchPoint()
     {
         if (hitPose != null)
         {
@@ -178,6 +186,7 @@ public class PlacementController : MonoBehaviour
         arPlaneManager.enabled = !arPlaneManager.enabled;
         toggleButton.GetComponentInChildren<TextMeshProUGUI>().text = arPlaneManager.enabled ? "Disable Detection" : "Enable Detection";
     }
+    //平面高さ調整
     private void AdjustPlaneHeight(int vec)
     {
         if(basePlane != null)
@@ -185,6 +194,7 @@ public class PlacementController : MonoBehaviour
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
         }
     }
+    //クラウドアンカー読み込み時の生成
     public void ReCreatePlacement(Transform transform)
     {
         spawnedObject = Instantiate(placedPrefab, transform.position, transform.rotation).transform;
