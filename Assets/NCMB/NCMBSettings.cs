@@ -191,6 +191,7 @@ namespace NCMB
 			_useAnalytics = useAnalytics;
 
 			// Register
+/*
 			if (usePush) {
 				//Installation基本情報を取得
 				NCMBManager.CreateInstallationProperty ();
@@ -209,6 +210,7 @@ namespace NCMB
 					#endif
 				}
 			}
+			*/
 		}
 
 		/// <summary>
