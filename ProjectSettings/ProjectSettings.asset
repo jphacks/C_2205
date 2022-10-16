@@ -537,7 +537,7 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: ARKit
   locationUsageDescription: 
   microphoneUsageDescription: 
   bluetoothUsageDescription: 
