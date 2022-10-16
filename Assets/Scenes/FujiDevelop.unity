@@ -1068,7 +1068,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AnchorPrefab: {fileID: 0}
+  m_AnchorPrefab: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
+    type: 3}
 --- !u!114 &734359575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1076,13 +1077,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734359567}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb1b8cb2621396943b2f761c403eb44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hostButton: {fileID: 444545206}
+  resolveButton: {fileID: 607480301}
   arCamera: {fileID: 818796778}
   resolveAnchorPassedTimeout: 5
+  resolveObject: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
+    type: 3}
   debugText: {fileID: 1613700659}
   scanQuality: {fileID: 209293112}
 --- !u!114 &734359576
@@ -1101,10 +1106,11 @@ MonoBehaviour:
   planeUpButton: {fileID: 1071451099}
   planeDownButton: {fileID: 1672284009}
   finishSettingButton: {fileID: 1298554199}
+  debugToggleObjectButton: {fileID: 407875240}
   defaultMaterial: {fileID: 2100000, guid: 0a33dbb53ef2d864dbd4fdce78e63080, type: 2}
   selectedPlaneMaterial: {fileID: 2100000, guid: 514ab69f4fb058340ad95192c60ea62c,
     type: 2}
-  testObject: {fileID: 590953025321264516, guid: 5f027d6a39d0e824793cdd7a3567f579,
+  testObject: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
     type: 3}
   initialCircle: {fileID: 4718906207770273209, guid: 6fdc87370f10ebe4ab112eccd293c902,
     type: 3}

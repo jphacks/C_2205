@@ -1,32 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using Google.XR.ARCoreExtensions;
 
-public class cloudAnchorCreatedEvent : UnityEvent<Transform> { }
-
 public class ARCloudAnchorManager : MonoBehaviour
 {
+    [SerializeField] private Button hostButton, resolveButton;
     [SerializeField] private Camera arCamera = null;
     [SerializeField] private float resolveAnchorPassedTimeout = 5.0f;
     private ARAnchorManager arAnchorManager = null;
+
     private ARAnchor pendingHostAnchor = null;
-    private ARCloudAnchor cloudAnchor = null;
+    private ARCloudAnchor cloudAnchorHosted = null,cloudAnchorResolved = null;
     private CreateBasePlane createBasePlane = null;
     private string anchorIDtoResolve;
     private bool anchorHostInProgress = false, anchorResolveInProgress = false;
     private float safeToResolvePassed = 0;
-    private cloudAnchorCreatedEvent cloudAnchorCreatedEvent = null;
 
-    //ホスト前に30秒程のスキャンが推奨される。
-    FeatureMapQuality quality;
+    [SerializeField] private GameObject resolveObject;
+    
     [SerializeField] private TextMeshProUGUI debugText,scanQuality;
 
     private void Awake()
     {
+        if (hostButton != null)
+        {
+            hostButton.onClick.AddListener(HostAnchor);
+        }
+        if (resolveButton != null)
+        {
+            resolveButton.onClick.AddListener(Resolve);
+        }
         arAnchorManager = GetComponent<ARAnchorManager>();
     }
 
@@ -43,10 +51,10 @@ public class ARCloudAnchorManager : MonoBehaviour
     public void HostAnchor()
     {
         debugText.text = "HostAnchor call in progress";
-        quality = arAnchorManager.EstimateFeatureMapQualityForHosting(GetCameraPose());
+
         //とっておいたアンカーをホスト、有効期限1日
-        cloudAnchor = arAnchorManager.HostCloudAnchor(pendingHostAnchor, 1);
-        if(cloudAnchor== null)
+        cloudAnchorHosted = ARAnchorManagerExtensions.HostCloudAnchor(arAnchorManager, pendingHostAnchor, 1);
+        if(cloudAnchorHosted== null)
         {
             debugText.text = "Unable to host cloud anchor";
         }
@@ -58,9 +66,9 @@ public class ARCloudAnchorManager : MonoBehaviour
     public void Resolve()
     {
         debugText.text = "Resolve call in progress";
-        cloudAnchor = arAnchorManager.ResolveCloudAnchorId(anchorIDtoResolve);
+        cloudAnchorResolved = ARAnchorManagerExtensions.ResolveCloudAnchorId(arAnchorManager, anchorIDtoResolve);
 
-        if (cloudAnchor == null)
+        if (cloudAnchorResolved == null)
         {
             debugText.text = $"Unable to resolve cloud anchor:{anchorIDtoResolve}";
         }
@@ -69,13 +77,20 @@ public class ARCloudAnchorManager : MonoBehaviour
             anchorResolveInProgress = true;
         }
     }
+
+    //ホスト作業の監督、成功したらロード用のIDを格納、失敗したらエラー表示
     public void CheckHostingProgress()
     {
-        CloudAnchorState cloudAnchorState = cloudAnchor.cloudAnchorState;
+        //ホスト前に30秒程のスキャンが推奨される。
+        FeatureMapQuality quality = ARAnchorManagerExtensions.EstimateFeatureMapQualityForHosting(arAnchorManager, GetCameraPose());
+        scanQuality.text = quality.ToString();
+
+        CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
         if (cloudAnchorState == CloudAnchorState.Success)
         {
+            debugText.text = "Host Success!";
             anchorHostInProgress = false;
-            anchorIDtoResolve = cloudAnchor.cloudAnchorId;
+            anchorIDtoResolve = cloudAnchorHosted.cloudAnchorId;
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
@@ -83,13 +98,17 @@ public class ARCloudAnchorManager : MonoBehaviour
             anchorHostInProgress = false;
         }
     }
+
+    //ロード作業の監督
     public void CheckResolveProgress()
     {
-        CloudAnchorState cloudAnchorState = cloudAnchor.cloudAnchorState;
+        CloudAnchorState cloudAnchorState = cloudAnchorResolved.cloudAnchorState;
+        //成功したらその場所に生成
         if (cloudAnchorState == CloudAnchorState.Success)
         {
+            debugText.text = "Resolve Success!";
             anchorResolveInProgress = false;
-            cloudAnchorCreatedEvent?.Invoke(cloudAnchor.transform);
+            Instantiate(resolveObject, cloudAnchorResolved.pose.position, cloudAnchorResolved.pose.rotation);
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
@@ -98,12 +117,9 @@ public class ARCloudAnchorManager : MonoBehaviour
         }
     }
     #endregion
-
     // Update is called once per frame
     void Update()
-    {
-        scanQuality.text = $"Feature Map Quality: {quality}";
-
+    {   
         //ホストチェック
         if (anchorHostInProgress)
         {
