@@ -950,7 +950,7 @@ GameObject:
   - component: {fileID: 1287015713}
   - component: {fileID: 1287015711}
   - component: {fileID: 1287015714}
-  - component: {fileID: 1287015712}
+  - component: {fileID: 1287015715}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -1071,18 +1071,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &1287015712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1287015709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a42d371a48007af4bad7dd8212978c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1287015713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1108,6 +1096,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f010a6bc1a950645bdba6a99e15d3d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_camera: {fileID: 1434295716}
+--- !u!114 &1287015715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287015709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e59c70b8ac888ab45878d3478591ef40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_camera: {fileID: 1434295716}
