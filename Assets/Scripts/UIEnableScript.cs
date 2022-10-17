@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static UIEnableScript;
 
 public class UIEnableScript : MonoBehaviour
 {
@@ -9,22 +10,10 @@ public class UIEnableScript : MonoBehaviour
     {
         DetectPlane,
         AdjustPlane,
-        RenderLine
+        RenderLine,
+        ShareAnchor,
     }
 
-    //Inspectorに複数データを表示するためのクラス
-    [System.SerializableAttribute]
-    public class EnableUIList
-    {
-        public UIState uIState;
-        public List<GameObject> List = new List<GameObject>();
-
-        public EnableUIList(UIState uI, List<GameObject> list)
-        {
-            uIState = uI;
-            List = list;
-        }
-    }
     //Inspectorに表示される
     [SerializeField]
     private List<EnableUIList> _UIListList = new List<EnableUIList>();
@@ -35,11 +24,6 @@ public class UIEnableScript : MonoBehaviour
         ChangeUIState(UIState.DetectPlane);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void ChangeUIState(UIState next)
     {
@@ -65,13 +49,37 @@ public class UIEnableScript : MonoBehaviour
         }
     }
 
-    public void FinishDetectionButton()
+    public void SetDetectPlaneState()
+    {
+        ChangeUIState(UIState.DetectPlane);
+    }
+
+    public void SetAdjustPlaneState()
+    {
+        ChangeUIState(UIState.AdjustPlane);
+    }
+
+    public void SetRenderLineState()
     {
         ChangeUIState(UIState.RenderLine);
     }
 
-    public void SetBasePlaneButton()
+    public void SetShareAnchorState()
     {
-        ChangeUIState(UIState.AdjustPlane);
+        ChangeUIState(UIState.ShareAnchor);
+    }
+}
+
+//Inspectorに複数データを表示するためのクラス
+[System.Serializable]
+public class EnableUIList
+{
+    public UIState uIState;
+    public List<GameObject> List = new List<GameObject>();
+
+    public EnableUIList(UIState uI, List<GameObject> list)
+    {
+        uIState = uI;
+        List = list;
     }
 }
