@@ -104,4 +104,13 @@ public class LineRenderingTest : MonoBehaviour
             m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, hit.point);
         }
     }
+
+    /// <summary>
+    /// ï«ê∂ê¨ÇÃèIóπ
+    /// </summary>
+    public void FinishMakeWall()
+    {
+        m_hasUpdatefunction = false;
+        m_lineRenderer.loop = true;
+    }
 }
