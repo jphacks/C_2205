@@ -144,14 +144,16 @@ namespace NCMB
 				NCMBAnalytics.TrackAppOpened (pushId);
 				SaveOpenedPushId(null);
 			}
-
+/*
 			if (UnityEngine.iOS.NotificationServices.remoteNotificationCount > 0) {
 				ProcessNotification ();
 				NCMBPush push = new NCMBPush ();
 				push.ClearAll ();
 			}
+			*/
 		}
 
+/*
 		void ProcessNotification ()
 		{
 			// Payload data dictionary
@@ -196,7 +198,7 @@ namespace NCMB
 				onNotificationReceived (pl);
 			}
 		}
-
+*/
 		void OnApplicationPause (bool pause)
 		{
 			if (!pause) {
@@ -211,9 +213,9 @@ namespace NCMB
 
 		IEnumerator IEClearAfterAFrame ()
 		{
-			yield return 0;
+			yield return 0;/*
 			NCMBPush push = new NCMBPush ();
-			push.ClearAll ();
+			push.ClearAll ();*/
 		}
 		#endif
 		#endregion
