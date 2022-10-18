@@ -58,6 +58,7 @@ public class ARCloudAnchorManager : MonoBehaviour
     }
     public void HostAnchor()
     {
+        //ボタンを押した瞬間にホストが始まる。結構調子いいけど正確さを保証できない。
         debugText.text = "HostAnchor call in progress";
 
         //とっておいたアンカーをホスト、有効期限1日
@@ -116,7 +117,7 @@ public class ARCloudAnchorManager : MonoBehaviour
         {
             debugText.text = "Resolve Success!\nPosition: " + cloudAnchorResolved.pose.position + "\nRotation: " + cloudAnchorResolved.pose.rotation;
             anchorResolveInProgress = false;
-            resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.pose.position, cloudAnchorResolved.pose.rotation).transform;
+            resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {

@@ -60,3 +60,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 /UserSettings
+Assets/Env.cs
+Assets/Env.cs.meta
