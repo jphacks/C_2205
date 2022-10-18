@@ -18,14 +18,14 @@ public class CreateBasePlane : MonoBehaviour
     private Transform spawnedTestObject;
 
     private ARAnchorManager arAnchorManager;
-    private ARCloudAnchorManager arCloudAnchorManager;
+    private HostARCloudAnchor hostARCloudAnchor;
 
     //起動時、コンポーネント取得、ボタンに機能付与
     void Awake()
     {
         arPlaneManager = GetComponent<ARPlaneManager>();
         arRaycastManager = GetComponent<ARRaycastManager>();
-        arCloudAnchorManager = GetComponent<ARCloudAnchorManager>();
+        hostARCloudAnchor = GetComponent<HostARCloudAnchor>();
         arAnchorManager = GetComponent<ARAnchorManager>();
 
         //ホスト側のボタン、基準平面設定、基準平面高さ調整、調整終了
@@ -146,10 +146,10 @@ public class CreateBasePlane : MonoBehaviour
     private void FinishSetting()
     {
         Instantiate(initialCircle, spawnedTestObject.position, Quaternion.identity);
-        if (arCloudAnchorManager.enabled)
+        if (hostARCloudAnchor.enabled)
         {
-            //arCloudAnchorManager.pendingHostAnchor = spawnedTestObject.gameObject.AddComponent<ARAnchor>();
-            arCloudAnchorManager.pendingHostAnchor = arAnchorManager.AttachAnchor(basePlane, new Pose(spawnedTestObject.position, spawnedTestObject.rotation));
+            //hostARCloudAnchor.pendingHostAnchor = spawnedTestObject.gameObject.AddComponent<ARAnchor>();
+            hostARCloudAnchor.pendingHostAnchor = arAnchorManager.AttachAnchor(basePlane, new Pose(spawnedTestObject.position, spawnedTestObject.rotation));
         }
         basePlane.gameObject.SetActive(false);
     }
