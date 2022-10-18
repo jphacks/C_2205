@@ -12,7 +12,7 @@
       "hash": "55208a5317c2402e55ed7f931c16288d6a2b7756"
     },
     "com.unity.burst": {
-      "version": "1.7.3",
+      "version": "1.6.6",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -73,7 +73,7 @@
       "source": "builtin",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
-        "com.unity.burst": "1.7.3",
+        "com.unity.burst": "1.5.0",
         "com.unity.render-pipelines.core": "12.1.7",
         "com.unity.shadergraph": "12.1.7"
       }
@@ -177,7 +177,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.10",
+      "version": "2.1.9",
       "depth": 2,
       "source": "registry",
       "dependencies": {

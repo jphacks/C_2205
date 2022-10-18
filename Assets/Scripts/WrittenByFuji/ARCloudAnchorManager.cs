@@ -9,12 +9,12 @@ using Google.XR.ARCoreExtensions;
 
 public class ARCloudAnchorManager : MonoBehaviour
 {
-    [SerializeField] private Button hostButton, resolveButton;
+    [SerializeField] private Button hostButton, resolveButton,forwardButton,backButton,rightButton,leftButton;
     [SerializeField] private Camera arCamera = null;
     [SerializeField] private float resolveAnchorPassedTimeout = 5.0f;
     private ARAnchorManager arAnchorManager = null;
 
-    private ARAnchor pendingHostAnchor = null;
+    [HideInInspector] public ARAnchor pendingHostAnchor = null;
     private ARCloudAnchor cloudAnchorHosted = null,cloudAnchorResolved = null;
     private CreateBasePlane createBasePlane = null;
     private string anchorIDtoResolve;
@@ -22,6 +22,7 @@ public class ARCloudAnchorManager : MonoBehaviour
     private float safeToResolvePassed = 0;
 
     [SerializeField] private GameObject resolveObject;
+    private Transform resolvedObject;
     
     [SerializeField] private TextMeshProUGUI debugText,scanQuality;
 
@@ -34,6 +35,13 @@ public class ARCloudAnchorManager : MonoBehaviour
         if (resolveButton != null)
         {
             resolveButton.onClick.AddListener(Resolve);
+        }
+        if (forwardButton != null && backButton != null && rightButton != null && backButton != null)
+        {
+            forwardButton.onClick.AddListener(() => AdjustResolve(Vector3.forward));
+            backButton.onClick.AddListener(() => AdjustResolve(Vector3.back));
+            rightButton.onClick.AddListener(() => AdjustResolve(Vector3.right));
+            leftButton.onClick.AddListener(() => AdjustResolve(Vector3.left));
         }
         arAnchorManager = GetComponent<ARAnchorManager>();
     }
@@ -63,6 +71,27 @@ public class ARCloudAnchorManager : MonoBehaviour
             anchorHostInProgress = true;
         }
     }
+
+    //ホスト作業の監督、成功したらロード用のIDを格納、失敗したらエラー表示
+    public void CheckHostingProgress()
+    {
+        //ホスト前に30秒程のスキャンが推奨される。
+        FeatureMapQuality quality = ARAnchorManagerExtensions.EstimateFeatureMapQualityForHosting(arAnchorManager, GetCameraPose());
+        scanQuality.text = quality.ToString();
+
+        CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
+        if (cloudAnchorState == CloudAnchorState.Success)
+        {
+            debugText.text = "Host Success!\nPosition:" + cloudAnchorHosted.pose.position + "\nRotation:" + cloudAnchorHosted.pose.rotation;
+            anchorHostInProgress = false;
+            anchorIDtoResolve = cloudAnchorHosted.cloudAnchorId;
+        }
+        else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
+        {
+            debugText.text = $"Error while hosting: {cloudAnchorState}";
+            anchorHostInProgress = false;
+        }
+    }
     public void Resolve()
     {
         debugText.text = "Resolve call in progress";
@@ -78,27 +107,6 @@ public class ARCloudAnchorManager : MonoBehaviour
         }
     }
 
-    //ホスト作業の監督、成功したらロード用のIDを格納、失敗したらエラー表示
-    public void CheckHostingProgress()
-    {
-        //ホスト前に30秒程のスキャンが推奨される。
-        FeatureMapQuality quality = ARAnchorManagerExtensions.EstimateFeatureMapQualityForHosting(arAnchorManager, GetCameraPose());
-        scanQuality.text = quality.ToString();
-
-        CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
-        if (cloudAnchorState == CloudAnchorState.Success)
-        {
-            debugText.text = "Host Success!";
-            anchorHostInProgress = false;
-            anchorIDtoResolve = cloudAnchorHosted.cloudAnchorId;
-        }
-        else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
-        {
-            debugText.text = $"Error while hosting: {cloudAnchorState}";
-            anchorHostInProgress = false;
-        }
-    }
-
     //ロード作業の監督
     public void CheckResolveProgress()
     {
@@ -106,9 +114,9 @@ public class ARCloudAnchorManager : MonoBehaviour
         //成功したらその場所に生成
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "Resolve Success!";
+            debugText.text = "Resolve Success!\nPosition: " + cloudAnchorResolved.pose.position + "\nRotation: " + cloudAnchorResolved.pose.rotation;
             anchorResolveInProgress = false;
-            Instantiate(resolveObject, cloudAnchorResolved.pose.position, cloudAnchorResolved.pose.rotation);
+            resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.pose.position, cloudAnchorResolved.pose.rotation).transform;
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
@@ -141,5 +149,10 @@ public class ARCloudAnchorManager : MonoBehaviour
         {
             safeToResolvePassed -= Time.deltaTime * 1.0f;
         }
+    }
+
+    private void AdjustResolve(Vector3 direction)
+    {
+        resolvedObject.Translate(direction * 0.1f);
     }
 }
