@@ -51,7 +51,7 @@ PlayerSettings:
   m_MTRendering: 1
   mipStripping: 0
   numberOfMipsStripped: 0
-  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  m_StackTraceTypes: 020000000200000002000000020000000200000001000000
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
   iosUseCustomAppBackgroundBehavior: 0
@@ -535,7 +535,7 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: ARKit
+  cameraUsageDescription: Use for AR
   locationUsageDescription: 
   microphoneUsageDescription: 
   bluetoothUsageDescription: 
@@ -777,7 +777,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    iPhone: 
+    iPhone: ARCORE_EXTENSIONS_IOS_SUPPORT;CLOUDANCHOR_IOS_SUPPORT;UNITY_XR_ARKIT_LOADER_ENABLED
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -796,6 +796,7 @@ PlayerSettings:
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform:
     Android: 3
+    iPhone: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: com.unity.template-starter-kit
