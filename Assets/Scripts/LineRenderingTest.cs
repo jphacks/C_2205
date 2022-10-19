@@ -113,4 +113,25 @@ public class LineRenderingTest : MonoBehaviour
         m_hasUpdatefunction = false;
         m_lineRenderer.loop = true;
     }
+
+    /// <summary>
+    /// linerendererの基準点ベクトル配列を出力
+    /// </summary>
+    /// <returns></returns>
+    public Vector3[] ExportLinePoints()
+    {
+        Vector3[] linePoints = new Vector3[m_lineRenderer.positionCount];
+        m_lineRenderer.GetPositions(linePoints);
+        return linePoints;
+    }
+
+    /// <summary>
+    /// linerendererの基準点ベクトル配列を取得し、適用
+    /// </summary>
+    /// <param name="points"></param>
+    public void SetImportedPoints(Vector3[] points)
+    {
+        m_lineRenderer.positionCount = points.Length;
+        m_lineRenderer.SetPositions(points);
+    }
 }
