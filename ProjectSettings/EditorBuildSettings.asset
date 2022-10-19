@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FujiDevelop.unity
-    guid: 7760e291c99d877439a83e3705e2f6ac
-  - enabled: 0
     path: Assets/Scenes/WallDevelop.unity
     guid: e927114588a094e5ebc8b19e562ac36b
+  - enabled: 0
+    path: Assets/Scenes/FujiDevelop.unity
+    guid: 7760e291c99d877439a83e3705e2f6ac
   - enabled: 0
     path: Assets/Scenes/hizumo.unity
     guid: 20f009c65dbbea04386660716f85a6f7
