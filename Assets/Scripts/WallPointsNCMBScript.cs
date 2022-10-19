@@ -13,18 +13,18 @@ public class WallPointsNCMBScript : MonoBehaviour
     NCMBObject wallPointsClass;
     private void Awake()
     {
-        //NCMBä¸Šã®IDã®å ´æ‰€ã‚’ç‰¹å®š
+        //NCMBã‚ÌID‚ÌêŠ‚ğ“Á’è
         wallPointsClass = new NCMBObject("WallPoints");
         wallPointsClass.ObjectId = "xAPdhJzA9PHX52IR";
     }
 
-    //NCMBã«å£ã®åº§æ¨™ã®é…åˆ—ã‚’å—ã‘æ¸¡ã™
+    //NCMB‚É•Ç‚ÌÀ•W‚Ì”z—ñ‚ğó‚¯“n‚·
     public void HostWallPoints(Vector3[] positions)
     {
         int Len = positions.Length;
         // debugText.text = "Host Success!\nPosition:" + cloudAnchorHosted.pose.position + "\nRotation:" + cloudAnchorHosted.pose.rotation;
         // anchorHostInProgress = false;
-        //x,y,zã®é…åˆ—ã«åˆ†è§£
+        //x,y,z‚Ì”z—ñ‚É•ª‰ğ
         float[] posX = new float[Len], posY = new float[Len], posZ = new float[Len];
         for (int i = 0; i < Len; i++)
         {
@@ -32,14 +32,14 @@ public class WallPointsNCMBScript : MonoBehaviour
             posY[i] = positions[i].y;
             posZ[i] = positions[i].z;
         }
-        //NCMBã«å‘¼ã³å‡ºã—ç”¨ã®IDã‚’ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
+        //NCMB‚ÉŒÄ‚Ño‚µ—p‚ÌID‚ğƒAƒbƒvƒ[ƒh
         wallPointsClass["posX"] = posX;
         wallPointsClass["posY"] = posY;
         wallPointsClass["posZ"] = posZ;
         wallPointsClass.SaveAsync();
     }
 
-    //NCMBã‹ã‚‰å£ã®åº§æ¨™ã®é…åˆ—ã‚’å—ã‘å–ã‚‹
+    //NCMB‚©‚ç•Ç‚ÌÀ•W‚Ì”z—ñ‚ğó‚¯æ‚é
     public void ReceiveWallPoints()
     {
         wallPointsClass.FetchAsync((NCMBException e) =>
@@ -60,13 +60,13 @@ public class WallPointsNCMBScript : MonoBehaviour
                     positions[i] = new Vector3(float.Parse(resX[i].ToString()), float.Parse(resY[i].ToString()), float.Parse(resZ[i].ToString()));
                 }
                 //Debug.Log(positions[1]);
-                //ã“ã“ã§void å£ç”Ÿæˆ(Vector3[] positions)ã‚’å‘¼ã¶
+                //‚±‚±‚Åvoid •Ç¶¬(Vector3[] positions)‚ğŒÄ‚Ô
 
             }
         });
     }
 
-    //åº§æ¨™ã‚’NCMBã«ä¿å­˜ã™ã‚‹ãƒ†ã‚¹ãƒˆé–¢æ•°
+    //À•W‚ğNCMB‚É•Û‘¶‚·‚éƒeƒXƒgŠÖ”
     public void TestVector3()
     {
         Vector3[] v3 = new[]{
