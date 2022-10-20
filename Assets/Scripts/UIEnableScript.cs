@@ -14,7 +14,7 @@ public class UIEnableScript : MonoBehaviour
         ShareAnchor,
     }
 
-    //Inspectorã«è¡¨ç¤ºã•ã‚Œã‚‹
+    //Inspector‚É•\¦‚³‚ê‚é
     [SerializeField]
     private List<EnableUIList> _UIListList = new List<EnableUIList>();
 
@@ -70,7 +70,7 @@ public class UIEnableScript : MonoBehaviour
     }
 }
 
-//Inspectorã«è¤‡æ•°ãƒ‡ãƒ¼ã‚¿ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+//Inspector‚É•¡”ƒf[ƒ^‚ğ•\¦‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
 [System.Serializable]
 public class EnableUIList
 {
