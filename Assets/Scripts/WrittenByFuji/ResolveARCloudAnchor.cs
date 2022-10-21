@@ -64,7 +64,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
         //ê¨å˜ÇµÇΩÇÁÇªÇÃèÍèäÇ…ê∂ê¨
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "Resolve Success!\nPosition: " + cloudAnchorResolved.pose.position + "\nRotation: " + cloudAnchorResolved.pose.rotation;
+            debugText.text = "Resolve Success!\nPosition: " + cloudAnchorResolved.transform.position + "\nRotation: " + cloudAnchorResolved.transform.rotation;
             anchorResolveInProgress = false;
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
         }
