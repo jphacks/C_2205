@@ -230,6 +230,7 @@ namespace NCMB
 		public virtual void Awake ()
 		{
 #if CLOUD_BUILD
+			CloudEnv.ResolveEnvData();
 			applicationKey = CloudEnv.appKey;
 			clientKey = CloudEnv.clientKey;
 #else
