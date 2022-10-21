@@ -20,6 +20,8 @@ public class ResolveARCloudAnchor : MonoBehaviour
     private Transform resolvedObject;
     [SerializeField] private TextMeshProUGUI debugText;
     NCMBObject resolveIDClass;
+    [SerializeField]
+    private WallPointsNCMBScript pointsNCMBScript;
     private void Awake()
     {
         //NCMBã‚ÌID‚ÌêŠ‚ğ“Á’è
@@ -67,6 +69,8 @@ public class ResolveARCloudAnchor : MonoBehaviour
             debugText.text = "Resolve Success!\nPosition: " + cloudAnchorResolved.transform.position + "\nRotation: " + cloudAnchorResolved.transform.rotation;
             anchorResolveInProgress = false;
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
+            // NCMB‚©‚ç•ÇÀ•W‚ğæ“¾‚µ‚ÄlineRenderer‚É”½‰f
+            pointsNCMBScript.ReceiveWallPoints(resolvedObject.position);
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {

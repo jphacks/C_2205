@@ -689,7 +689,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 6
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -1606,6 +1606,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596782165}
   m_CullTransparentMesh: 1
+--- !u!1001 &707388458
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_Name
+      value: ResolveTestObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198510336675839212, guid: bbd35de78b4659648af650bcc43e8c3b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bbd35de78b4659648af650bcc43e8c3b, type: 3}
 --- !u!1 &742816018
 GameObject:
   m_ObjectHideFlags: 0
@@ -4186,6 +4260,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1649950212}
   m_CullTransparentMesh: 1
+--- !u!1 &1687341533 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
+    type: 3}
+  m_PrefabInstance: {fileID: 707388458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1795881741
 GameObject:
   m_ObjectHideFlags: 0
@@ -4360,6 +4440,7 @@ MonoBehaviour:
   arCamera: {fileID: 1104369734}
   pendingHostAnchor: {fileID: 0}
   debugText: {fileID: 1012598850}
+  pointsNCMBScript: {fileID: 272767848}
 --- !u!114 &1850049092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4376,12 +4457,10 @@ MonoBehaviour:
   planeUpButton: {fileID: 388997994}
   planeDownButton: {fileID: 363359661}
   finishSettingButton: {fileID: 774893270}
-  debugToggleObjectButton: {fileID: 0}
   defaultMaterial: {fileID: 2100000, guid: 0a33dbb53ef2d864dbd4fdce78e63080, type: 2}
   selectedPlaneMaterial: {fileID: 2100000, guid: 514ab69f4fb058340ad95192c60ea62c,
     type: 2}
-  testObject: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
-    type: 3}
+  testObject: {fileID: 1687341533}
   initialCircle: {fileID: 4718906207770273209, guid: 6fdc87370f10ebe4ab112eccd293c902,
     type: 3}
 --- !u!114 &1850049093
@@ -4628,19 +4707,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1878687794}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 272767848}
-        m_TargetAssemblyTypeName: WallPointsNCMBScript, Assembly-CSharp
-        m_MethodName: HostPointsData
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1878687794
 MonoBehaviour:
   m_ObjectHideFlags: 0
