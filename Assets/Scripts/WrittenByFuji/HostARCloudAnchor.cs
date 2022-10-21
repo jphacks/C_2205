@@ -20,6 +20,8 @@ public class HostARCloudAnchor : MonoBehaviour
 
     [SerializeField] private WallPointsNCMBScript pointsNCMBScript;
 
+    [SerializeField] private SwitchToVR switchToVR;
+
     NCMBObject resolveIDClass;
     private void Awake()
     {
@@ -76,6 +78,8 @@ public class HostARCloudAnchor : MonoBehaviour
             //NCMBに呼び出し用のIDをアップロード
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
             resolveIDClass.SaveAsync();
+
+            switchToVR.switchToVRButton.gameObject.SetActive(true);
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {

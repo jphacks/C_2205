@@ -22,6 +22,8 @@ public class ResolveARCloudAnchor : MonoBehaviour
     NCMBObject resolveIDClass;
     [SerializeField]
     private WallPointsNCMBScript pointsNCMBScript;
+
+    [SerializeField] private SwitchToVR switchToVR;
     private void Awake()
     {
         //NCMBã‚ÌID‚ÌêŠ‚ğ“Á’è
@@ -71,6 +73,8 @@ public class ResolveARCloudAnchor : MonoBehaviour
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
             // NCMB‚©‚ç•ÇÀ•W‚ğæ“¾‚µ‚ÄlineRenderer‚É”½‰f
             pointsNCMBScript.ReceiveWallPoints(resolvedObject.position);
+
+            switchToVR.switchToVRButton.gameObject.SetActive(true);
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
