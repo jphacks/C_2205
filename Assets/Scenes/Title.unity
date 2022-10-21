@@ -394,7 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonForHost: {fileID: 767161564}
   buttonForGuest: {fileID: 1990417870}
-  startText: {fileID: 0}
+  startText: {fileID: 1070031680}
 --- !u!4 &374306373
 Transform:
   m_ObjectHideFlags: 0

@@ -17,15 +17,16 @@ public class MenuInGame : MonoBehaviour
             confirmButton.onClick.AddListener(Confirm);
             cancelButton.onClick.AddListener(Cancel);
         }
-        titleScene = SceneManager.LoadSceneAsync("Title");
-        titleScene.allowSceneActivation = false;
         confirmScreen.rectTransform.localScale = Vector3.zero;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //‘JˆÚæ‚ªˆê‚Â‚µ‚©‚È‚¢‚Ì‚ÅƒvƒŒƒ[ƒh
+        titleScene = SceneManager.LoadSceneAsync("Title");
+        titleScene.priority = 2;
+        titleScene.allowSceneActivation = false;
     }
 
     // Update is called once per frame

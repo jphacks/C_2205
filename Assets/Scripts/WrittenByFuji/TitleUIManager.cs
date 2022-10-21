@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class TitleUIManager : MonoBehaviour
 {
-    private AsyncOperation hostScene;//, guestScene;
     [SerializeField] private Button buttonForHost, buttonForGuest;
     [SerializeField] private TMPro.TextMeshProUGUI startText;
 
@@ -17,18 +16,14 @@ public class TitleUIManager : MonoBehaviour
             buttonForHost.onClick.AddListener(ButtonForHost);
             buttonForGuest.onClick.AddListener(ButtonForGuest);
         }
-        hostScene = SceneManager.LoadSceneAsync("Host");
-        hostScene.allowSceneActivation = false;
-        //guestScene = SceneManager.LoadSceneAsync("Guest");
-        //guestScene.allowSceneActivation = false;
         buttonForHost.gameObject.SetActive(false);
-        buttonForGuest.gameObject.SetActive(true);
+        buttonForGuest.gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
     private void Update()
     {
@@ -52,10 +47,10 @@ public class TitleUIManager : MonoBehaviour
     }
     private void ButtonForHost()
     {
-        hostScene.allowSceneActivation = true;
+        SceneManager.LoadScene("Host");
     }
     private void ButtonForGuest()
     {
-        //guestScene.allowSceneActivation = true;
+        SceneManager.LoadScene("Guest");
     }
 }
