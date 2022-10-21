@@ -420,7 +420,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u57FA\u6E96\u9762\u3092\n\u4E0B\u3052\u308B"
+  m_text: "\u5E73\u9762\u3092\u4E0B\u3052\u308B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdfbef7ebfe52f40af1b29cd541dc06, type: 2}
   m_sharedMaterial: {fileID: -3764544831977862501, guid: 3fdfbef7ebfe52f40af1b29cd541dc06,
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30BB\u30FC\u30D5\u30A8\u30EA\u30A2\n\u4F5C\u6210"
+  m_text: "\u70B9\u3092\u6253\u3064"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdfbef7ebfe52f40af1b29cd541dc06, type: 2}
   m_sharedMaterial: {fileID: -3764544831977862501, guid: 3fdfbef7ebfe52f40af1b29cd541dc06,
@@ -1252,7 +1252,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u6210\u529F!\n\u30B2\u30FC\u30E0\u30B9\u30BF\u30FC\u30C8\u3057\u305F\u5F8C\n\u30B4\u30FC\u30B0\u30EB\u3092\u3064\u3051\u3066\n\u6226\u3044\u3092\u59CB\u3081\u3088\u3046\u3002"
+  m_text: "\u5E8A\u3092\u64AE\u5F71\u3057\u3066\u3001\n\u5E8A\u306B\u6700\u3082\u8FD1\u3044\u5E73\u9762\u3092\n\u9078\u629E\u3057\u3088\u3046\u3002"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 68fb1410753fff744be925ddde7b1497, type: 2}
   m_sharedMaterial: {fileID: 1542367016135574602, guid: 68fb1410753fff744be925ddde7b1497,
@@ -2353,7 +2353,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u57FA\u6E96\u9762\u3092\n\u4E0A\u3052\u308B"
+  m_text: "\u5E73\u9762\u3092\u4E0A\u3052\u308B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdfbef7ebfe52f40af1b29cd541dc06, type: 2}
   m_sharedMaterial: {fileID: -3764544831977862501, guid: 3fdfbef7ebfe52f40af1b29cd541dc06,
@@ -2460,7 +2460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8592b6c909aea48d58297831f70a2c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instructionText: {fileID: 0}
+  instructionText: {fileID: 543319046}
   _UIListList:
   - uIState: 0
     List:
@@ -3253,7 +3253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u57FA\u6E96\u70B9\u3092\n\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9"
+  m_text: "\u30BB\u30FC\u30D5\u30A8\u30EA\u30A2\n\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3fdfbef7ebfe52f40af1b29cd541dc06, type: 2}
   m_sharedMaterial: {fileID: -3764544831977862501, guid: 3fdfbef7ebfe52f40af1b29cd541dc06,
@@ -3628,7 +3628,7 @@ MonoBehaviour:
   - {fileID: 1644957993}
   - {fileID: 1649950212}
   - {fileID: 1878687791}
-  - {fileID: 0}
+  - {fileID: 543319045}
   - {fileID: 788195356}
   - {fileID: 1640298761}
   vrFunctions: {fileID: 1162330078}
@@ -4834,7 +4834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AnchorPrefab: {fileID: 2046039767136569483, guid: bbd35de78b4659648af650bcc43e8c3b,
+  m_AnchorPrefab: {fileID: 190700400600472654, guid: 1a3597717c5ecb043b25f99530c95636,
     type: 3}
 --- !u!114 &1850049097
 MonoBehaviour:

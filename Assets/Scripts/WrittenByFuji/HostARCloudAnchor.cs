@@ -34,12 +34,6 @@ public class HostARCloudAnchor : MonoBehaviour
         }
         arAnchorManager = GetComponent<ARAnchorManager>();
     }
-    /*
-    private Pose GetCameraPose()
-    {
-        return new Pose(arCamera.transform.position, arCamera.transform.rotation);
-    }
-    */
     //ホスト
     public void HostAnchor()
     {
@@ -61,10 +55,6 @@ public class HostARCloudAnchor : MonoBehaviour
     //ホスト作業の監督、成功したらロード用のIDを格納、失敗したらエラー表示
     public void CheckHostingProgress()
     {
-        //ホスト前に30秒程のスキャンが推奨される。
-        //FeatureMapQuality quality = ARAnchorManagerExtensions.EstimateFeatureMapQualityForHosting(arAnchorManager, GetCameraPose());
-        //scanQuality.text = quality.ToString();
-
         CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
         if (cloudAnchorState == CloudAnchorState.Success)
         {

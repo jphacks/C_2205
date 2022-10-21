@@ -68,7 +68,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
         //成功したらその場所に生成
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "呼び出し成功! ";
+            debugText.text = "呼び出し成功!\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
             anchorResolveInProgress = false;
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
             // NCMBから壁座標を取得してlineRendererに反映
