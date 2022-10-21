@@ -8,7 +8,7 @@ using TMPro;
 
 public class CreateBasePlane : MonoBehaviour
 {
-    [SerializeField] private Button setPlaneButton, planeUpButton, planeDownButton, finishSettingButton,debugToggleObjectButton;
+    [SerializeField] private Button setPlaneButton, planeUpButton, planeDownButton, finishSettingButton;
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -35,11 +35,6 @@ public class CreateBasePlane : MonoBehaviour
             planeUpButton.onClick.AddListener(() => AdjustPlaneHeight(1));
             planeDownButton.onClick.AddListener(() => AdjustPlaneHeight(-1));
             finishSettingButton.onClick.AddListener(FinishSetting);
-        }
-        //デバッグ用ボタン
-        if(debugToggleObjectButton!= null)
-        {
-            debugToggleObjectButton.onClick.AddListener(DebugToggle);
         }
     }
 
@@ -101,7 +96,7 @@ public class CreateBasePlane : MonoBehaviour
             planeSelected = arPlaneManager.GetPlane(hits[0].trackableId);
             planeSelected.gameObject.GetComponent<MeshRenderer>().material = selectedPlaneMaterial;
         }
-        //マーカーが生成されていないならタップ位置に生成、AnchorをつけTransform型で格納し平面を親とする。
+        //マーカーが生成されていないならタップ位置に生成
         if (spawnedTestObject == null)
         {
             spawnedTestObject = Instantiate(testObject, hits[0].pose.position, Quaternion.identity).transform;
@@ -152,10 +147,5 @@ public class CreateBasePlane : MonoBehaviour
             hostARCloudAnchor.pendingHostAnchor = arAnchorManager.AttachAnchor(basePlane, new Pose(spawnedTestObject.position, spawnedTestObject.rotation));
         }
         basePlane.gameObject.SetActive(false);
-    }
-
-    private void DebugToggle()
-    {
-        spawnedTestObject.gameObject.SetActive(!spawnedTestObject.gameObject.activeInHierarchy);
     }
 }

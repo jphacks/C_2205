@@ -16,7 +16,7 @@ public class HostARCloudAnchor : MonoBehaviour
     private ARCloudAnchor cloudAnchorHosted = null;
     private bool anchorHostInProgress = false;
 
-    [SerializeField] private TextMeshProUGUI debugText;//,scanQuality;
+    [SerializeField] private TextMeshProUGUI debugText;
 
     NCMBObject resolveIDClass;
     private void Awake()
@@ -29,17 +29,6 @@ public class HostARCloudAnchor : MonoBehaviour
             hostButton.onClick.AddListener(HostAnchor);
         }
         arAnchorManager = GetComponent<ARAnchorManager>();
-    }
-    /*
-    private Pose GetCameraPose()
-    {
-        return new Pose(arCamera.transform.position, arCamera.transform.rotation);
-    }
-    */
-    //ƒzƒXƒg
-    public void QueueAnchor(ARAnchor anchor)
-    {
-        pendingHostAnchor = anchor;
     }
     public void HostAnchor()
     {
