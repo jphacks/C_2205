@@ -25,7 +25,6 @@ public class MenuInGame : MonoBehaviour
     {
         //‘JˆÚæ‚ªˆê‚Â‚µ‚©‚È‚¢‚Ì‚ÅƒvƒŒƒ[ƒh
         titleScene = SceneManager.LoadSceneAsync("Title");
-        titleScene.priority = 2;
         titleScene.allowSceneActivation = false;
     }
 

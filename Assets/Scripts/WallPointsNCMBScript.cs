@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 public class WallPointsNCMBScript : MonoBehaviour
 {
+    [SerializeField]
+    private LineRenderingTest m_lineRenderingTest;
+
     // Start is called before the first frame update
     [SerializeField] private TextMeshProUGUI debugText;
     NCMBObject wallPointsClass;
@@ -18,8 +21,14 @@ public class WallPointsNCMBScript : MonoBehaviour
         wallPointsClass.ObjectId = "xAPdhJzA9PHX52IR";
     }
 
+    public void HostPointsData()
+    {
+        Vector3[] wallpoints = m_lineRenderingTest.ExportLinePoints();
+        HostWallPoints(wallpoints);
+    }
+
     //NCMBに壁の座標の配列を受け渡す
-    public void HostWallPoints(Vector3[] positions)
+    private void HostWallPoints(Vector3[] positions)
     {
         int Len = positions.Length;
         // debugText.text = "Host Success!\nPosition:" + cloudAnchorHosted.pose.position + "\nRotation:" + cloudAnchorHosted.pose.rotation;
@@ -60,21 +69,9 @@ public class WallPointsNCMBScript : MonoBehaviour
                     positions[i] = new Vector3(float.Parse(resX[i].ToString()), float.Parse(resY[i].ToString()), float.Parse(resZ[i].ToString()));
                 }
                 //Debug.Log(positions[1]);
-                //ここでvoid 壁生成(Vector3[] positions)を呼ぶ
+                m_lineRenderingTest.SetImportedPoints(positions);
 
             }
         });
-    }
-
-    //座標をNCMBに保存するテスト関数
-    public void TestVector3()
-    {
-        Vector3[] v3 = new[]{
-            new Vector3(0.1f,1.2f,2.3f),
-            new Vector3(3.4f,4.5f,5.6f),
-            new Vector3(6.7f,7.8f,8.9f),
-            new Vector3(9.1f,10.1f,11.1f)
-        };
-        HostWallPoints(v3);
     }
 }
