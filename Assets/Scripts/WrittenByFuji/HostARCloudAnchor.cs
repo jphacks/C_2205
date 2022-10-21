@@ -18,6 +18,8 @@ public class HostARCloudAnchor : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI debugText;
 
+    [SerializeField] private WallPointsNCMBScript pointsNCMBScript;
+
     NCMBObject resolveIDClass;
     private void Awake()
     {
@@ -30,6 +32,13 @@ public class HostARCloudAnchor : MonoBehaviour
         }
         arAnchorManager = GetComponent<ARAnchorManager>();
     }
+    /*
+    private Pose GetCameraPose()
+    {
+        return new Pose(arCamera.transform.position, arCamera.transform.rotation);
+    }
+    */
+    //ホスト
     public void HostAnchor()
     {
         //ボタンを押した瞬間にホストが始まる。結構調子いいけど正確さを保証できない。
@@ -62,6 +71,8 @@ public class HostARCloudAnchor : MonoBehaviour
                            + "\nRotation:" + cloudAnchorHosted.transform.rotation
                            + "\nResolveID:" + cloudAnchorHosted.cloudAnchorId;
             anchorHostInProgress = false;
+            //NCMBに壁座標データを送信
+            pointsNCMBScript.HostPointsData(cloudAnchorHosted.transform.position);
             //NCMBに呼び出し用のIDをアップロード
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
             resolveIDClass.SaveAsync();

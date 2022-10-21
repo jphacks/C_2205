@@ -21,9 +21,13 @@ public class WallPointsNCMBScript : MonoBehaviour
         wallPointsClass.ObjectId = "xAPdhJzA9PHX52IR";
     }
 
-    public void HostPointsData()
+    /// <summary>
+    /// NCMBに壁の座標の配列を渡す
+    /// </summary>
+    /// <param name="baseposition">壁相対座標から絶対座標に変換するための基準点</param>
+    public void HostPointsData(Vector3 baseposition)
     {
-        Vector3[] wallpoints = m_lineRenderingTest.ExportLinePoints();
+        Vector3[] wallpoints = m_lineRenderingTest.ExportLinePoints(baseposition);
         HostWallPoints(wallpoints);
     }
 
@@ -48,8 +52,11 @@ public class WallPointsNCMBScript : MonoBehaviour
         wallPointsClass.SaveAsync();
     }
 
-    //NCMBから壁の座標の配列を受け取る
-    public void ReceiveWallPoints()
+    /// <summary>
+    /// NCMBから壁の座標の配列を受け取る
+    /// </summary>
+    /// <param name="baseposition">壁相対座標から絶対座標に変換するための基準点</param>
+    public void ReceiveWallPoints(Vector3 baseposition)
     {
         wallPointsClass.FetchAsync((NCMBException e) =>
         {
@@ -69,7 +76,7 @@ public class WallPointsNCMBScript : MonoBehaviour
                     positions[i] = new Vector3(float.Parse(resX[i].ToString()), float.Parse(resY[i].ToString()), float.Parse(resZ[i].ToString()));
                 }
                 //Debug.Log(positions[1]);
-                m_lineRenderingTest.SetImportedPoints(positions);
+                m_lineRenderingTest.SetImportedPoints(positions, baseposition);
 
             }
         });

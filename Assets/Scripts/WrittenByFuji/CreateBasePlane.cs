@@ -15,7 +15,6 @@ public class CreateBasePlane : MonoBehaviour
     private ARPlane planeSelected, basePlane;
     [SerializeField] private Material defaultMaterial, selectedPlaneMaterial;
     [SerializeField] private GameObject testObject,initialCircle;
-    private Transform spawnedTestObject;
 
     private ARAnchorManager arAnchorManager;
     private HostARCloudAnchor hostARCloudAnchor;
@@ -96,16 +95,12 @@ public class CreateBasePlane : MonoBehaviour
             planeSelected = arPlaneManager.GetPlane(hits[0].trackableId);
             planeSelected.gameObject.GetComponent<MeshRenderer>().material = selectedPlaneMaterial;
         }
-        //マーカーが生成されていないならタップ位置に生成
-        if (spawnedTestObject == null)
+        //マーカーが生成されていないならタップ位置に生成、AnchorをつけTransform型で格納し平面を親とする。
+        if (testObject.activeSelf == false)
         {
-            spawnedTestObject = Instantiate(testObject, hits[0].pose.position, Quaternion.identity).transform;
+            testObject.SetActive(true);
         }
-        //二回目以降なら生成はせず移動で
-        else
-        {
-            spawnedTestObject.position = hits[0].pose.position;
-        }
+        testObject.transform.position = hits[0].pose.position;
     }
 
     //基準平面設定ボタン
@@ -133,18 +128,18 @@ public class CreateBasePlane : MonoBehaviour
         if(basePlane != null)
         {
             basePlane.transform.Translate(Vector3.up * vec * 0.01f);
-            spawnedTestObject.Translate(Vector3.up * vec * 0.01f);
+            testObject.transform.Translate(Vector3.up * vec * 0.01f);
         }
     }
 
     //設定終了、円形の初期フィールドを配置、マーカーをローカルアンカーとする
     private void FinishSetting()
     {
-        Instantiate(initialCircle, spawnedTestObject.position, Quaternion.identity);
+        Instantiate(initialCircle, testObject.transform.position, Quaternion.identity);
         if (hostARCloudAnchor.enabled)
         {
-            //hostARCloudAnchor.pendingHostAnchor = spawnedTestObject.gameObject.AddComponent<ARAnchor>();
-            hostARCloudAnchor.pendingHostAnchor = arAnchorManager.AttachAnchor(basePlane, new Pose(spawnedTestObject.position, spawnedTestObject.rotation));
+            //hostARCloudAnchor.pendingHostAnchor = testObject.transform.gameObject.AddComponent<ARAnchor>();
+            hostARCloudAnchor.pendingHostAnchor = arAnchorManager.AttachAnchor(basePlane, new Pose(testObject.transform.position, testObject.transform.rotation));
         }
         basePlane.gameObject.SetActive(false);
     }
