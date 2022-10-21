@@ -36,7 +36,6 @@ public class HostARCloudAnchor : MonoBehaviour
         return new Pose(arCamera.transform.position, arCamera.transform.rotation);
     }
     */
-    #region Cloud Anchor Cycle
     //ホスト
     public void QueueAnchor(ARAnchor anchor)
     {
@@ -69,7 +68,10 @@ public class HostARCloudAnchor : MonoBehaviour
         CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "Host Success!\nPosition:" + cloudAnchorHosted.pose.position + "\nRotation:" + cloudAnchorHosted.pose.rotation;
+            debugText.text = "Host Success!" +
+                "             \nPosition:" + cloudAnchorHosted.transform.position
+                           + "\nRotation:" + cloudAnchorHosted.transform.rotation
+                           + "\nResolveID:" + cloudAnchorHosted.cloudAnchorId;
             anchorHostInProgress = false;
             //NCMBに呼び出し用のIDをアップロード
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
@@ -81,7 +83,6 @@ public class HostARCloudAnchor : MonoBehaviour
             anchorHostInProgress = false;
         }
     }
-    #endregion
     // Update is called once per frame
     void Update()
     {   
