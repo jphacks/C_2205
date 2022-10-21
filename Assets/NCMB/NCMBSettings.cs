@@ -19,6 +19,7 @@ using System;
 using UnityEngine;
 using NCMB.Internal;
 using System.Collections.Generic;
+using CloudBuild;
 
 namespace NCMB
 {
@@ -228,9 +229,15 @@ namespace NCMB
 		/// </summary>
 		public virtual void Awake ()
 		{
-			applicationKey = Env.appKey;
-			clientKey = Env.clientKey;
-			if (!NCMBSettings._isInitialized) {
+#if CLOUD_BUILD
+			applicationKey = CloudEnv.appKey;
+			clientKey = CloudEnv.clientKey;
+#else
+            applicationKey = Env.appKey;
+            clientKey = Env.clientKey;
+#endif
+
+            if (!NCMBSettings._isInitialized) {
 				NCMBSettings._isInitialized = true;
 				_responseValidationFlag = responseValidation;
 				DontDestroyOnLoad (base.gameObject);
