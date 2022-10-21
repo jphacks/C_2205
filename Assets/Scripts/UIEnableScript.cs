@@ -27,6 +27,16 @@ public class UIEnableScript : MonoBehaviour
 
     public void ChangeUIState(UIState next)
     {
+        var disableObjects = _UIListList.Where(_ => _.uIState != next)
+.Select(_ => _.List).ToArray();
+        foreach (var objs in disableObjects)
+        {
+            foreach (var obj in objs)
+            {
+                Debug.Log(obj.transform.name);
+                obj.SetActive(false);
+            }
+        }
         var uiObjects = _UIListList.Where(_ => _.uIState == next)
         .Select(_ => _.List).ToArray();
         foreach (var objs in uiObjects)
@@ -35,16 +45,6 @@ public class UIEnableScript : MonoBehaviour
             {
                 Debug.Log(obj.transform.name);
                 obj.SetActive(true);
-            }
-        }
-        var disableObjects = _UIListList.Where(_ => _.uIState != next)
-        .Select(_ => _.List).ToArray();
-        foreach (var objs in disableObjects)
-        {
-            foreach (var obj in objs)
-            {
-                Debug.Log(obj.transform.name);
-                obj.SetActive(false);
             }
         }
     }

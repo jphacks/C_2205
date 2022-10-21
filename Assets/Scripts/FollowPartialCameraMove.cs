@@ -7,6 +7,7 @@ public class FollowPartialCameraMove : MonoBehaviour
     [SerializeField]
     private Camera m_camera;
 
+
     // Update is called once per frame
     void Update()
     {
