@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using Google.XR.ARCoreExtensions;
 
 public class LineRenderingTest : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class LineRenderingTest : MonoBehaviour
     private bool m_hasUpdatefunction = true;
 
     private bool m_isHold; // ボタンを押し続けているかどうか
+
+    private ARCloudAnchor m_cloudAnchor;
 
     private void Update()
     {
@@ -103,5 +106,47 @@ public class LineRenderingTest : MonoBehaviour
             m_lineRenderer.positionCount++;
             m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, hit.point);
         }
+    }
+
+    /// <summary>
+    /// 壁生成の終了
+    /// </summary>
+    public void FinishMakeWall()
+    {
+        m_hasUpdatefunction = false;
+        m_lineRenderer.loop = true;
+    }
+
+    /// <summary>
+    /// linerendererの相対ベクトル配列を出力
+    /// </summary>
+    /// <param name="basepoint">壁表示の基準となる空間座標</param>
+    /// <returns></returns>
+    public Vector3[] ExportLinePoints(Vector3 basepoint)
+    {
+        Vector3[] linePoints = new Vector3[m_lineRenderer.positionCount];
+        m_lineRenderer.GetPositions(linePoints);
+        // 相対座標に変換
+        for (int i=0; i<linePoints.Length; i++)
+        {
+            linePoints[i] -= basepoint;
+        }
+        return linePoints;
+    }
+
+    /// <summary>
+    /// linerendererの相対ベクトル配列を取得し、適用
+    /// </summary>
+    /// <param name="points"></param>
+    /// <param name="basepoint">壁表示の基準となる空間座標</param>
+    public void SetImportedPoints(Vector3[] points, Vector3 basepoint)
+    {
+        // 絶対座標に変換
+        for (int i = 0; i < points.Length; i++)
+        {
+            points[i] += basepoint;
+        }
+        m_lineRenderer.positionCount = points.Length;
+        m_lineRenderer.SetPositions(points);
     }
 }

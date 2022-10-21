@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static UIEnableScript;
 
 public class UIEnableScript : MonoBehaviour
 {
@@ -9,23 +10,11 @@ public class UIEnableScript : MonoBehaviour
     {
         DetectPlane,
         AdjustPlane,
-        RenderLine
+        RenderLine,
+        ShareAnchor,
     }
 
-    //Inspector„Å´Ë§áÊï∞„Éá„Éº„Çø„ÇíË°®Á§∫„Åô„Çã„Åü„ÇÅ„ÅÆ„ÇØ„É©„Çπ
-    [System.SerializableAttribute]
-    public class EnableUIList
-    {
-        public UIState uIState;
-        public List<GameObject> List = new List<GameObject>();
-
-        public EnableUIList(UIState uI, List<GameObject> list)
-        {
-            uIState = uI;
-            List = list;
-        }
-    }
-    //Inspector„Å´Ë°®Á§∫„Åï„Çå„Çã
+    //InspectorÇ…ï\é¶Ç≥ÇÍÇÈ
     [SerializeField]
     private List<EnableUIList> _UIListList = new List<EnableUIList>();
 
@@ -35,14 +24,19 @@ public class UIEnableScript : MonoBehaviour
         ChangeUIState(UIState.DetectPlane);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void ChangeUIState(UIState next)
     {
+        var disableObjects = _UIListList.Where(_ => _.uIState != next)
+.Select(_ => _.List).ToArray();
+        foreach (var objs in disableObjects)
+        {
+            foreach (var obj in objs)
+            {
+                Debug.Log(obj.transform.name);
+                obj.SetActive(false);
+            }
+        }
         var uiObjects = _UIListList.Where(_ => _.uIState == next)
         .Select(_ => _.List).ToArray();
         foreach (var objs in uiObjects)
@@ -53,25 +47,39 @@ public class UIEnableScript : MonoBehaviour
                 obj.SetActive(true);
             }
         }
-        var disableObjects = _UIListList.Where(_ => _.uIState != next)
-        .Select(_ => _.List).ToArray();
-        foreach (var objs in disableObjects)
-        {
-            foreach (var obj in objs)
-            {
-                Debug.Log(obj.transform.name);
-                obj.SetActive(false);
-            }
-        }
     }
 
-    public void FinishDetectionButton()
+    public void SetDetectPlaneState()
+    {
+        ChangeUIState(UIState.DetectPlane);
+    }
+
+    public void SetAdjustPlaneState()
+    {
+        ChangeUIState(UIState.AdjustPlane);
+    }
+
+    public void SetRenderLineState()
     {
         ChangeUIState(UIState.RenderLine);
     }
 
-    public void SetBasePlaneButton()
+    public void SetShareAnchorState()
     {
-        ChangeUIState(UIState.AdjustPlane);
+        ChangeUIState(UIState.ShareAnchor);
+    }
+}
+
+//InspectorÇ…ï°êîÉfÅ[É^Çï\é¶Ç∑ÇÈÇΩÇﬂÇÃÉNÉâÉX
+[System.Serializable]
+public class EnableUIList
+{
+    public UIState uIState;
+    public List<GameObject> List = new List<GameObject>();
+
+    public EnableUIList(UIState uI, List<GameObject> list)
+    {
+        uIState = uI;
+        List = list;
     }
 }
