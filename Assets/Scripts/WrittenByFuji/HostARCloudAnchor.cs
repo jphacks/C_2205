@@ -44,13 +44,13 @@ public class HostARCloudAnchor : MonoBehaviour
     public void HostAnchor()
     {
         //ボタンを押した瞬間にホストが始まる。結構調子いいけど正確さを保証できない。
-        debugText.text = "HostAnchor call in progress";
+        debugText.text = "アップロード中…\nオレンジの棒を色んな\n角度からうつそう。";
 
         //とっておいたアンカーをホスト、有効期限1日
         cloudAnchorHosted = ARAnchorManagerExtensions.HostCloudAnchor(arAnchorManager, pendingHostAnchor, 1);
         if(cloudAnchorHosted== null)
         {
-            debugText.text = "Unable to host cloud anchor";
+            debugText.text = "アップロード失敗…\nアプリを再起動\nしてください。";
         }
         else
         {
@@ -68,10 +68,7 @@ public class HostARCloudAnchor : MonoBehaviour
         CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "Host Success!" +
-                "             \nPosition:" + cloudAnchorHosted.transform.position
-                           + "\nRotation:" + cloudAnchorHosted.transform.rotation
-                           + "\nResolveID:" + cloudAnchorHosted.cloudAnchorId;
+            debugText.text = "アップロード成功!\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
             anchorHostInProgress = false;
             //NCMBに壁座標データを送信
             pointsNCMBScript.HostPointsData(cloudAnchorHosted.transform.position);
@@ -83,7 +80,7 @@ public class HostARCloudAnchor : MonoBehaviour
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
-            debugText.text = $"Error while hosting: {cloudAnchorState}";
+            debugText.text = $"エラー発生: {cloudAnchorState}";
             anchorHostInProgress = false;
         }
     }
