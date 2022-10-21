@@ -8,6 +8,8 @@ public class SwitchToVR : MonoBehaviour
     public Button switchToVRButton;
     [SerializeField] private GameObject[] deactivateOnVRstart;
     [SerializeField] private GameObject vrFunctions, arFunctions;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private Material wallMaterial;
     
     private void Awake()
     {
@@ -32,6 +34,7 @@ public class SwitchToVR : MonoBehaviour
     }
     private void Switch()
     {
+        lineRenderer.material = wallMaterial;
         switchToVRButton.gameObject.SetActive(false);
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         arFunctions.SetActive(false);
