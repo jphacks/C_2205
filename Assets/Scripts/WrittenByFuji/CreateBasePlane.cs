@@ -135,11 +135,13 @@ public class CreateBasePlane : MonoBehaviour
     //設定終了、円形の初期フィールドを配置、マーカーをローカルアンカーとする
     private void FinishSetting()
     {
-        Instantiate(initialCircle, testObject.transform.position, Quaternion.identity);
+        GameObject circle = Instantiate(initialCircle, testObject.transform.position, Quaternion.identity);
         if (hostARCloudAnchor.enabled)
         {
             //hostARCloudAnchor.pendingHostAnchor = testObject.transform.gameObject.AddComponent<ARAnchor>();
             hostARCloudAnchor.pendingHostAnchor = arAnchorManager.AttachAnchor(basePlane, new Pose(testObject.transform.position, testObject.transform.rotation));
+            hostARCloudAnchor.anchorObject = testObject;
+            hostARCloudAnchor.initialCircle = circle;
         }
         basePlane.gameObject.SetActive(false);
     }
