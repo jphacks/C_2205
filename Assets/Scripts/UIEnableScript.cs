@@ -4,8 +4,11 @@ using UnityEngine;
 using System.Linq;
 using static UIEnableScript;
 
+using TMPro;
+
 public class UIEnableScript : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI instructionText;
     public enum UIState
     {
         DetectPlane,
@@ -56,16 +59,19 @@ public class UIEnableScript : MonoBehaviour
 
     public void SetAdjustPlaneState()
     {
+        instructionText.text = "必要なら、床と合う\nように平面の高さを\n調整しよう。";
         ChangeUIState(UIState.AdjustPlane);
     }
 
     public void SetRenderLineState()
     {
+        instructionText.text = "遊ぶ範囲を囲むように\n点を設置し、セーフ\nエリアを作ろう。";
         ChangeUIState(UIState.RenderLine);
     }
 
     public void SetShareAnchorState()
     {
+        instructionText.text = "セーフエリアを\nアップロードしよう。";
         ChangeUIState(UIState.ShareAnchor);
     }
 }

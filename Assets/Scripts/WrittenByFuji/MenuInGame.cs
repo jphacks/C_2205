@@ -8,7 +8,6 @@ public class MenuInGame : MonoBehaviour
 {
     [SerializeField] private Button confirmButton, cancelButton;
     [SerializeField] private Image confirmScreen;
-    [SerializeField] private TMPro.TextMeshProUGUI tapForMenu_L, tapForMenu_R;
     private AsyncOperation titleScene;
 
     private void Awake()
@@ -38,8 +37,6 @@ public class MenuInGame : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 confirmScreen.rectTransform.localScale = Vector3.one;
-                tapForMenu_L.text = "";
-                tapForMenu_R.text = "";
             }
         }
     }
@@ -50,7 +47,5 @@ public class MenuInGame : MonoBehaviour
     private void Cancel()
     {
         confirmScreen.rectTransform.localScale = Vector3.zero;
-        tapForMenu_L.text = "Tap for menu";
-        tapForMenu_R.text = "Tap for menu";
     }
 }
