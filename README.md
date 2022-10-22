@@ -61,7 +61,7 @@
 * iPhone
 
 #### アーキテクチャ
-[![IMAGE ALT TEXT HERE](https://github.com/jphacks/C_2205/blob/master/アーキテクチャ.png)]
+![IMAGE ALT TEXT HERE](https://github.com/jphacks/C_2205/blob/master/アーキテクチャ.png)
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
