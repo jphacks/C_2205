@@ -1,6 +1,6 @@
 # 気配 × 斬り
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)][(https://youtu.be/7IZsxriJmVI)]
+[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)(https://youtu.be/7IZsxriJmVI)]
 
 ## 製品概要 気配斬り×Tech
 気配 × 斬りは、「気配斬り」をより楽しく、安全に遊ぶためにサポートするツールです。
