@@ -60,6 +60,9 @@
 * Android
 * iPhone
 
+#### アーキテクチャ
+[![IMAGE ALT TEXT HERE](https://github.com/jphacks/C_2205/blob/master/アーキテクチャ.png)]
+
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
 * 制限範囲をスマホの画面を見ながら設定する機能
