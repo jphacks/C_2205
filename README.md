@@ -69,6 +69,8 @@
 ### Android版ダウンロードリンク
 https://drive.google.com/file/d/1pIe9yCt-3aeLNq-AlZ3TRThuJ4U9Anwz/view?usp=sharing
 ※合わせてGooglePlay開発者サービスforARが必要になります。インストールされていない方はアプリ起動時にダウンロードを要求されます。
+
 ※スペックの古いAndroidでは動かないため注意してください。
+
 ※iOSは開発環境で処理が重すぎる不具合を解消しきれなかったため試遊できるアプリを用意できませんでした。iOSユーザーの方申し訳ございません。
 
