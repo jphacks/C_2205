@@ -1,6 +1,6 @@
 # 気配 × 斬り
 
-[![IMAGE ALT TEXT HERE](https://github.com/jphacks/C_2205/edit/master/気配斬りロゴ.png)](https://youtu.be/7IZsxriJmVI)
+[![IMAGE ALT TEXT HERE](https://github.com/jphacks/C_2205/blob/master/%E6%B0%97%E9%85%8D%E6%96%AC%E3%82%8A%E3%83%AD%E3%82%B3%E3%82%99.png)](https://youtu.be/7IZsxriJmVI)
 
 ## 製品概要 気配斬り×Tech
 気配 × 斬りは、「気配斬り」をより楽しく、安全に遊ぶためにサポートするツールです。
