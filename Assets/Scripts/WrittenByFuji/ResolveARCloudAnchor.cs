@@ -38,12 +38,12 @@ public class ResolveARCloudAnchor : MonoBehaviour
     //呼び出し
     public void ResolveAnchor()
     {
-        debugText.text = "Resolve call in progress";
+        debugText.text = "呼び出し中…";
         resolveIDClass.FetchAsync((NCMBException e) =>
         {
             if(e != null)
             {
-                debugText.text = "NCMB Error:" + e;
+                debugText.text = "エラー発生:" + e;
             }
             else
             {
@@ -68,7 +68,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
         //成功したらその場所に生成
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "Resolve Success!\nPosition: " + cloudAnchorResolved.transform.position + "\nRotation: " + cloudAnchorResolved.transform.rotation;
+            debugText.text = "呼び出し成功!\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
             anchorResolveInProgress = false;
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
             // NCMBから壁座標を取得してlineRendererに反映
@@ -78,7 +78,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
-            debugText.text = $"Error while resolving: {cloudAnchorState}";
+            debugText.text = $"呼び出し中の\nエラー: {cloudAnchorState}";
             anchorResolveInProgress = false;
         }
     }
@@ -91,7 +91,6 @@ public class ResolveARCloudAnchor : MonoBehaviour
             safeToResolvePassed = resolveAnchorPassedTimeout;
             if (!string.IsNullOrEmpty(resolveIDClass["ResolveID"].ToString()))
             {
-                debugText.text = $"Resolving Anchor Id: {resolveIDClass["ResolveID"]}";
                 CheckResolveProgress();
             }
         }

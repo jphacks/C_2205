@@ -62,7 +62,7 @@ public class WallPointsNCMBScript : MonoBehaviour
         {
             if (e != null)
             {
-                debugText.text = "NCMB Error:" + e;
+                debugText.text = "NCMBÉGÉâÅ[:" + e;
             }
             else
             {
