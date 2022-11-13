@@ -14,7 +14,7 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
     private float elapsedTime;
     [SerializeField] private Transform positionTarget;
     private bool ncmbSyncStarted;
-
+    [SerializeField] private float syncInterval;
     [SerializeField] private GameObject syncDebugObject;
     // Start is called before the first frame update
     private void Start()
@@ -55,13 +55,42 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        if(elapsedTime > 5 && ncmbSyncStarted)
+        if(elapsedTime > syncInterval && ncmbSyncStarted)
         {
             float[] positionAsArray = new float[] {positionTarget.position.x, positionTarget.position.y, positionTarget.position.z };
             myKehaiTable["position"] = positionAsArray;
             myKehaiTable["inGame"] = true;
             myKehaiTable.SaveAsync();
             elapsedTime = 0;
+        }
+    }
+    /*
+     * このアプリ戻るボタン押しても何もないからここ要らないかもよ
+    private void OnApplicationFocus(bool focus)
+    {
+        //戻るボタンで中断されたときはPauseが呼ばれるかわからないのでこっちを呼ぶ。更新を停止しNCMBをリセット
+        if (!focus)
+        {
+            ncmbSyncStarted = false;
+            myKehaiTable["position"] = new float[] { 0, 10, 0 };
+            myKehaiTable["inGame"] = false;
+            myKehaiTable.SaveAsync();
+        }
+    }
+    */
+    private void OnApplicationPause(bool pause)
+    {
+        //ゲームを中断したら更新を停止、NCMBをリセット
+        if (pause)
+        {
+            ncmbSyncStarted = false;
+            myKehaiTable["position"] = new float[] { 0, 10, 0 };
+            myKehaiTable["inGame"] = false;
+            myKehaiTable.SaveAsync();
+        }
+        else
+        {
+            ncmbSyncStarted = true;
         }
     }
 
