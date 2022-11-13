@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -201,6 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 14497629}
   - component: {fileID: 14497628}
+  - component: {fileID: 14497630}
   m_Layer: 0
   m_Name: NCMBPositionManager
   m_TagString: Untagged
@@ -222,8 +223,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStartButton: {fileID: 1640298763}
   gameEndButton: {fileID: 1638430036}
-  debugSyncButton: {fileID: 1379417081}
   positionTarget: {fileID: 290096179}
+  syncInterval: 7
   syncDebugObject: {fileID: 590953025321264516, guid: 5f027d6a39d0e824793cdd7a3567f579,
     type: 3}
 --- !u!4 &14497629
@@ -241,6 +242,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &14497630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14497627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3319785f6c5a625408863d00f2bfcdd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interval: 7
+  particlePrefab: {fileID: 5646094447162005134, guid: 0a5492237d7e26b4abd6713b448a049e,
+    type: 3}
 --- !u!1001 &75534387
 PrefabInstance:
   m_ObjectHideFlags: 0
