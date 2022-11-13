@@ -15,7 +15,7 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
     [SerializeField] private Transform positionTarget;
     private bool ncmbSyncStarted;
     [SerializeField] private float syncInterval;
-    [SerializeField] private GameObject syncDebugObject;
+    [SerializeField] private GameObject particlePrefab;
     // Start is called before the first frame update
     private void Start()
     {
@@ -62,6 +62,7 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
             myKehaiTable["inGame"] = true;
             myKehaiTable.SaveAsync();
             elapsedTime = 0;
+            GenerateAura();
         }
     }
     /*
@@ -113,7 +114,7 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
         myKehaiTable["inGame"] = false;
         myKehaiTable.SaveAsync();
     }
-    public List<Vector3> GetAllPlayerPosition()
+    private void GenerateAura()
     {
         List<Vector3> positionList = new List<Vector3>();
         //自分以外のIDのデータ取得
@@ -132,11 +133,10 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
                 {
                     //NCMBオブジェクトをfloatの配列に変換
                     ArrayList objAsArray = obj["position"] as ArrayList;
-                    Vector3 position = new Vector3(Convert.ToSingle(objAsArray[0]), Convert.ToSingle(objAsArray[1]), Convert.ToSingle(objAsArray[2]));
-                    positionList.Add(position);
+                    Vector3 auraPosition = new Vector3(Convert.ToSingle(objAsArray[0]), Convert.ToSingle(objAsArray[1]), Convert.ToSingle(objAsArray[2]));
+                    Instantiate(particlePrefab, auraPosition, Quaternion.identity);
                 }
             }
         });
-        return positionList;
     }
 }

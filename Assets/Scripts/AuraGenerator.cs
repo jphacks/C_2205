@@ -26,10 +26,12 @@ public class AuraGenerator : MonoBehaviour
     }
     private void GenerateAura()
     {
+        /*
         foreach (Vector3 auraPosition in allPlayerPositionInfoForKehai.GetAllPlayerPosition())
         {
             Instantiate(particlePrefab, auraPosition, Quaternion.identity);
         }
+        */
     }
 
 }
