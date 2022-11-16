@@ -81,4 +81,35 @@ public class WallPointsNCMBScript : MonoBehaviour
             }
         });
     }
+
+    /// <summary>
+    /// NCMBから壁の座標の配列を受け取る
+    /// </summary>
+    /// <param name="baseposition">壁相対座標から絶対座標に変換するための基準点</param>
+    /// <param name="eulerangles">基準点の向いている方向</param>
+    public void ReceiveWallPoints(Vector3 baseposition, Vector3 eulerangles)
+    {
+        wallPointsClass.FetchAsync((NCMBException e) =>
+        {
+            if (e != null)
+            {
+                debugText.text = "NCMBエラー:" + e;
+            }
+            else
+            {
+                ArrayList resX = wallPointsClass["posX"] as ArrayList;
+                ArrayList resY = wallPointsClass["posY"] as ArrayList;
+                ArrayList resZ = wallPointsClass["posZ"] as ArrayList;
+                int Len = resX.Count;
+                Vector3[] positions = new Vector3[Len];
+                for (int i = 0; i < Len; i++)
+                {
+                    positions[i] = new Vector3(float.Parse(resX[i].ToString()), float.Parse(resY[i].ToString()), float.Parse(resZ[i].ToString()));
+                }
+                //Debug.Log(positions[1]);
+                m_lineRenderingTest.SetImportedPoints(positions, baseposition, eulerangles);
+
+            }
+        });
+    }
 }

@@ -72,7 +72,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
             anchorResolveInProgress = false;
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
             // NCMB‚©‚ç•ÇÀ•W‚ğæ“¾‚µ‚ÄlineRenderer‚É”½‰f
-            pointsNCMBScript.ReceiveWallPoints(resolvedObject.position);
+            pointsNCMBScript.ReceiveWallPoints(resolvedObject.position, cloudAnchorResolved.transform.eulerAngles);
 
             switchToVR.switchToVRButton.gameObject.SetActive(true);
         }
