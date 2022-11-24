@@ -16,6 +16,8 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
     private bool ncmbSyncStarted;
     [SerializeField] private float syncInterval;
     [SerializeField] private GameObject particlePrefab;
+
+    [HideInInspector] public Vector3 cloudAnchorPos;
     // Start is called before the first frame update
     private void Start()
     {
@@ -57,7 +59,7 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
         elapsedTime += Time.deltaTime;
         if(elapsedTime > syncInterval && ncmbSyncStarted)
         {
-            float[] positionAsArray = new float[] {positionTarget.position.x, positionTarget.position.y, positionTarget.position.z };
+            float[] positionAsArray = new float[] { positionTarget.position.x - cloudAnchorPos.x, positionTarget.position.y - cloudAnchorPos.y, positionTarget.position.z - cloudAnchorPos.z };
             myKehaiTable["position"] = positionAsArray;
             myKehaiTable["inGame"] = true;
             myKehaiTable.SaveAsync();
