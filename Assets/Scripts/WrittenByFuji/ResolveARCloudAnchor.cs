@@ -18,11 +18,11 @@ public class ResolveARCloudAnchor : MonoBehaviour
     private bool anchorResolveInProgress = false;
     [SerializeField] private GameObject resolveObject;
     private Transform resolvedObject;
-    [SerializeField] private TextMeshProUGUI debugText;
+    [SerializeField] private TextMeshProUGUI debugText,VRdebugText;
     NCMBObject resolveIDClass;
     [SerializeField]
     private WallPointsNCMBScript pointsNCMBScript;
-
+    [SerializeField] private AllPlayerPositionInfoForKehai allPlayerPositionInfoForKehai;
     [SerializeField] private SwitchToVR switchToVR;
     private void Awake()
     {
@@ -73,8 +73,11 @@ public class ResolveARCloudAnchor : MonoBehaviour
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
             // NCMBから壁座標を取得してlineRendererに反映
             pointsNCMBScript.ReceiveWallPoints(resolvedObject.position, cloudAnchorResolved.transform.eulerAngles);
-
+            //気配共有の基準にすべくPositionを渡す
+            allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorResolved.transform.position;
             switchToVR.switchToVRButton.gameObject.SetActive(true);
+            //視界の左下のテキスト
+            VRdebugText.text = $"X:{cloudAnchorResolved.transform.position.x}\nY:{cloudAnchorResolved.transform.position.y}\nZ:{cloudAnchorResolved.transform.position.z}";
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {

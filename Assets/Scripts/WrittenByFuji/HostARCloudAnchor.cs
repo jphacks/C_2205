@@ -16,11 +16,12 @@ public class HostARCloudAnchor : MonoBehaviour
     private ARCloudAnchor cloudAnchorHosted = null;
     private bool anchorHostInProgress = false;
 
-    [SerializeField] private TextMeshProUGUI debugText;
+    [SerializeField] private TextMeshProUGUI debugText,VRdebugText;
 
     [SerializeField] private WallPointsNCMBScript pointsNCMBScript;
 
     [SerializeField] private SwitchToVR switchToVR;
+    [SerializeField] private AllPlayerPositionInfoForKehai allPlayerPositionInfoForKehai;
     [HideInInspector] public GameObject anchorObject, initialCircle;
 
     NCMBObject resolveIDClass;
@@ -66,7 +67,11 @@ public class HostARCloudAnchor : MonoBehaviour
             //NCMBに呼び出し用のIDをアップロード
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
             resolveIDClass.SaveAsync();
-            if(anchorObject!= null && initialCircle != null)
+            //気配共有の基準にすべくPositionを渡す
+            allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorHosted.transform.position;
+            //視界の左下のテキスト
+            VRdebugText.text = $"X:{cloudAnchorHosted.transform.position.x}\nY:{cloudAnchorHosted.transform.position.y}\nZ:{cloudAnchorHosted.transform.position.z}";
+            if (anchorObject!= null && initialCircle != null)
             {
                 anchorObject.SetActive(false);
                 initialCircle.SetActive(false);
