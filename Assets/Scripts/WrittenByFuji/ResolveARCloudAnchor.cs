@@ -73,8 +73,11 @@ public class ResolveARCloudAnchor : MonoBehaviour
             resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
             // NCMBから壁座標を取得してlineRendererに反映
             pointsNCMBScript.ReceiveWallPoints(resolvedObject.position, cloudAnchorResolved.transform.eulerAngles);
-            //気配共有の基準にすべくPositionを渡す
+            //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
             allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorResolved.transform.position;
+            allPlayerPositionInfoForKehai.cloudAnchorRot = transform.rotation.eulerAngles;
+            allPlayerPositionInfoForKehai.auraGenerator.position = cloudAnchorResolved.transform.position;
+            allPlayerPositionInfoForKehai.auraGenerator.rotation = cloudAnchorResolved.transform.rotation;
             switchToVR.switchToVRButton.gameObject.SetActive(true);
             //視界の左下のテキスト
             VRdebugText.text = $"X:{cloudAnchorResolved.transform.position.x}\nY:{cloudAnchorResolved.transform.position.y}\nZ:{cloudAnchorResolved.transform.position.z}";

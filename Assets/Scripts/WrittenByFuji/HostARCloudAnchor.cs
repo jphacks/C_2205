@@ -67,10 +67,13 @@ public class HostARCloudAnchor : MonoBehaviour
             //NCMBに呼び出し用のIDをアップロード
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
             resolveIDClass.SaveAsync();
-            //気配共有の基準にすべくPositionを渡す
+            //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
             allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorHosted.transform.position;
+            allPlayerPositionInfoForKehai.cloudAnchorRot = transform.rotation.eulerAngles;
+            allPlayerPositionInfoForKehai.auraGenerator.position = cloudAnchorHosted.transform.position;
+            allPlayerPositionInfoForKehai.auraGenerator.rotation = cloudAnchorHosted.transform.rotation;
             //視界の左下のテキスト
-            VRdebugText.text = $"X:{cloudAnchorHosted.transform.position.x}\nY:{cloudAnchorHosted.transform.position.y}\nZ:{cloudAnchorHosted.transform.position.z}";
+            VRdebugText.text = $"";
             if (anchorObject!= null && initialCircle != null)
             {
                 anchorObject.SetActive(false);
