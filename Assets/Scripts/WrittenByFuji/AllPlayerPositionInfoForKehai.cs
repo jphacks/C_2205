@@ -13,6 +13,7 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
     NCMBQuery<NCMBObject> ncmbQuery;
     private float elapsedTime;
     [SerializeField] private Transform positionTarget;
+    [SerializeField] private GameObject auraPrefab;
     private bool ncmbSyncStarted;
     [SerializeField] private float syncInterval;
     public Transform auraGenerator;
@@ -144,7 +145,11 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
                     Vector3 rotDelta = new Vector3(cloudAnchorRot.x - Convert.ToSingle(rotAsArray[0]), cloudAnchorRot.y - Convert.ToSingle(rotAsArray[1]), cloudAnchorRot.z - Convert.ToSingle(rotAsArray[2]));
                     auraGenerator.GetChild(0).position = new Vector3(Convert.ToSingle(posAsArray[0]) + cloudAnchorPos.x, Convert.ToSingle(posAsArray[1]) + cloudAnchorPos.y, Convert.ToSingle(posAsArray[2]) + cloudAnchorPos.z);
                     auraGenerator.rotation = Quaternion.Euler(cloudAnchorRot - rotDelta);
-                    auraGenerator.GetChild(0).GetComponent<ParticleSystem>().Play();
+                    positionList.Add(auraGenerator.GetChild(0).position);
+                }
+                for (int i = 0; i < positionList.Count; i++)
+                {
+                    Instantiate(auraPrefab, positionList[i], Quaternion.identity);
                 }
             }
         });
