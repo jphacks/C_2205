@@ -69,7 +69,7 @@ public class HostARCloudAnchor : MonoBehaviour
             resolveIDClass.SaveAsync();
             //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
             allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorHosted.transform.position;
-            allPlayerPositionInfoForKehai.cloudAnchorRot = transform.rotation.eulerAngles;
+            allPlayerPositionInfoForKehai.cloudAnchorRot = cloudAnchorHosted.transform.rotation.eulerAngles;
             allPlayerPositionInfoForKehai.auraGenerator.position = cloudAnchorHosted.transform.position;
             allPlayerPositionInfoForKehai.auraGenerator.rotation = cloudAnchorHosted.transform.rotation;
             //視界の左下のテキスト

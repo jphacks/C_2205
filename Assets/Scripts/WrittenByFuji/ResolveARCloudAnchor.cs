@@ -75,7 +75,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
             pointsNCMBScript.ReceiveWallPoints(resolvedObject.position, cloudAnchorResolved.transform.eulerAngles);
             //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
             allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorResolved.transform.position;
-            allPlayerPositionInfoForKehai.cloudAnchorRot = transform.rotation.eulerAngles;
+            allPlayerPositionInfoForKehai.cloudAnchorRot = cloudAnchorResolved.transform.rotation.eulerAngles;
             allPlayerPositionInfoForKehai.auraGenerator.position = cloudAnchorResolved.transform.position;
             allPlayerPositionInfoForKehai.auraGenerator.rotation = cloudAnchorResolved.transform.rotation;
             switchToVR.switchToVRButton.gameObject.SetActive(true);
