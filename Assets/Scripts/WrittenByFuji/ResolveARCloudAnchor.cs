@@ -22,7 +22,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
     NCMBObject resolveIDClass;
     [SerializeField]
     private WallPointsNCMBScript pointsNCMBScript;
-    [SerializeField] private AllPlayerPositionInfoForKehai allPlayerPositionInfoForKehai;
+    [SerializeField] private ShareAura shareAura;
     [SerializeField] private SwitchToVR switchToVR;
     private void Awake()
     {
@@ -74,13 +74,14 @@ public class ResolveARCloudAnchor : MonoBehaviour
             // NCMBから壁座標を取得してlineRendererに反映
             pointsNCMBScript.ReceiveWallPoints(resolvedObject.position, cloudAnchorResolved.transform.eulerAngles);
             //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
-            allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorResolved.transform.position;
-            allPlayerPositionInfoForKehai.cloudAnchorRot = cloudAnchorResolved.transform.rotation.eulerAngles;
-            allPlayerPositionInfoForKehai.auraGenerator.position = cloudAnchorResolved.transform.position;
-            allPlayerPositionInfoForKehai.auraGenerator.rotation = cloudAnchorResolved.transform.rotation;
+            shareAura.cloudAnchorPos = cloudAnchorResolved.transform.position;
+            shareAura.cloudAnchorRot = cloudAnchorResolved.transform.rotation.eulerAngles;
+            shareAura.auraGenerator.position = cloudAnchorResolved.transform.position;
+            shareAura.auraGenerator.rotation = cloudAnchorResolved.transform.rotation;
+            shareAura.SetDebugAxis(cloudAnchorResolved.transform.position, cloudAnchorResolved.transform.rotation.eulerAngles);
             switchToVR.switchToVRButton.gameObject.SetActive(true);
             //視界の左下のテキスト
-            VRdebugText.text = $"X:{cloudAnchorResolved.transform.position.x}\nY:{cloudAnchorResolved.transform.position.y}\nZ:{cloudAnchorResolved.transform.position.z}";
+            VRdebugText.text = $"X:{cloudAnchorResolved.transform.rotation.x}\nY:{cloudAnchorResolved.transform.rotation.y}\nZ:{cloudAnchorResolved.transform.rotation.z}";
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {

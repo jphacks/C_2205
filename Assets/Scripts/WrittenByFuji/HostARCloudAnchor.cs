@@ -21,7 +21,7 @@ public class HostARCloudAnchor : MonoBehaviour
     [SerializeField] private WallPointsNCMBScript pointsNCMBScript;
 
     [SerializeField] private SwitchToVR switchToVR;
-    [SerializeField] private AllPlayerPositionInfoForKehai allPlayerPositionInfoForKehai;
+    [SerializeField] private ShareAura shareAura;
     [HideInInspector] public GameObject anchorObject, initialCircle;
 
     NCMBObject resolveIDClass;
@@ -68,19 +68,19 @@ public class HostARCloudAnchor : MonoBehaviour
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
             resolveIDClass.SaveAsync();
             //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
-            allPlayerPositionInfoForKehai.cloudAnchorPos = cloudAnchorHosted.transform.position;
-            allPlayerPositionInfoForKehai.cloudAnchorRot = cloudAnchorHosted.transform.rotation.eulerAngles;
-            allPlayerPositionInfoForKehai.auraGenerator.position = cloudAnchorHosted.transform.position;
-            allPlayerPositionInfoForKehai.auraGenerator.rotation = cloudAnchorHosted.transform.rotation;
+            shareAura.cloudAnchorPos = cloudAnchorHosted.transform.position;
+            shareAura.cloudAnchorRot = cloudAnchorHosted.transform.rotation.eulerAngles;
+            shareAura.auraGenerator.position = cloudAnchorHosted.transform.position;
+            shareAura.auraGenerator.rotation = cloudAnchorHosted.transform.rotation;
+            shareAura.SetDebugAxis(cloudAnchorHosted.transform.position, cloudAnchorHosted.transform.rotation.eulerAngles);
+            switchToVR.switchToVRButton.gameObject.SetActive(true);
             //視界の左下のテキスト
-            VRdebugText.text = $"";
+            VRdebugText.text = $"X:{cloudAnchorHosted.transform.rotation.x}\nY:{cloudAnchorHosted.transform.rotation.y}\nZ:{cloudAnchorHosted.transform.rotation.z}";
             if (anchorObject!= null && initialCircle != null)
             {
                 anchorObject.SetActive(false);
                 initialCircle.SetActive(false);
             }
-
-            switchToVR.switchToVRButton.gameObject.SetActive(true);
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {

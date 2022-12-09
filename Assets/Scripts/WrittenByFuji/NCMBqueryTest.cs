@@ -6,7 +6,6 @@ using System;
 
 public class NCMBqueryTest : MonoBehaviour
 {
-    [SerializeField] AllPlayerPositionInfoForKehai allPlayerPositionInfoForKehai;
     NCMBObject testObj;
     // Start is called before the first frame update
     void Start()
