@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using NCMB;
-using TMPro;
 using System;
 
-public class AllPlayerPositionInfoForKehai : MonoBehaviour
+public class ShareAura : MonoBehaviour
 {
     [SerializeField] private Button gameStartButton,gameEndButton;
     NCMBObject myKehaiTable;
     NCMBQuery<NCMBObject> ncmbQuery;
     private float elapsedTime;
-    [SerializeField] private Transform positionTarget;
+    [SerializeField] private Transform positionTarget,axisDebugger;
     [SerializeField] private GameObject auraPrefab;
     private bool ncmbSyncStarted;
     [SerializeField] private float syncInterval;
@@ -52,6 +51,12 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
             });
         }
         ncmbSyncStarted = false;
+    }
+
+    public void SetDebugAxis(Vector3 pos,Vector3 rot)
+    {
+        axisDebugger.position = cloudAnchorPos;
+        axisDebugger.rotation = Quaternion.Euler(cloudAnchorRot);
     }
 
     // Update is called once per frame
@@ -140,11 +145,13 @@ public class AllPlayerPositionInfoForKehai : MonoBehaviour
                 foreach (NCMBObject obj in objList)
                 {
                     //NCMBオブジェクトをfloatの配列に変換
-                    ArrayList posAsArray = obj["position"] as ArrayList;
+                    ArrayList posDeltaAsArray = obj["position"] as ArrayList;
                     ArrayList rotAsArray = obj["rotation"] as ArrayList;
                     Vector3 rotDelta = new Vector3(cloudAnchorRot.x - Convert.ToSingle(rotAsArray[0]), cloudAnchorRot.y - Convert.ToSingle(rotAsArray[1]), cloudAnchorRot.z - Convert.ToSingle(rotAsArray[2]));
-                    auraGenerator.GetChild(0).position = new Vector3(Convert.ToSingle(posAsArray[0]) + cloudAnchorPos.x, Convert.ToSingle(posAsArray[1]) + cloudAnchorPos.y, Convert.ToSingle(posAsArray[2]) + cloudAnchorPos.z);
-                    auraGenerator.rotation = Quaternion.Euler(cloudAnchorRot - rotDelta);
+                    auraGenerator.GetChild(0).position = new Vector3(cloudAnchorPos.x + Convert.ToSingle(posDeltaAsArray[0]),
+                                                                     cloudAnchorPos.y + Convert.ToSingle(posDeltaAsArray[1]),
+                                                                     cloudAnchorPos.z + Convert.ToSingle(posDeltaAsArray[2]));
+                    //auraGenerator.rotation = Quaternion.Euler(cloudAnchorRot - rotDelta);
                     positionList.Add(auraGenerator.GetChild(0).position);
                 }
                 for (int i = 0; i < positionList.Count; i++)

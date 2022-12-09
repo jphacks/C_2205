@@ -6,16 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class MenuInGame : MonoBehaviour
 {
-    [SerializeField] private Button confirmButton, cancelButton;
+    [SerializeField] private Button confirmButton, cancelButton, backToTitleButton;
     [SerializeField] private Image confirmScreen;
     private AsyncOperation titleScene;
 
     private void Awake()
     {
-        if(confirmButton != null && cancelButton != null)
+        if(confirmButton != null && cancelButton != null && backToTitleButton != null)
         {
-            confirmButton.onClick.AddListener(Confirm);
+            confirmButton.onClick.AddListener(BackToTitle);
             cancelButton.onClick.AddListener(Cancel);
+            backToTitleButton.onClick.AddListener(BackToTitle);
         }
         confirmScreen.rectTransform.localScale = Vector3.zero;
     }
@@ -40,7 +41,7 @@ public class MenuInGame : MonoBehaviour
             }
         }
     }
-    private void Confirm()
+    private void BackToTitle()
     {
         titleScene.allowSceneActivation = true;
     }
