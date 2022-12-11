@@ -12,7 +12,7 @@ public class CreateBasePlane : MonoBehaviour
     private ARPlaneManager arPlaneManager;
     private ARRaycastManager arRaycastManager;
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-    private ARPlane planeSelected, basePlane;
+    private ARPlane planeSelected = null, basePlane;
     [SerializeField] private Material defaultMaterial, selectedPlaneMaterial;
     [SerializeField] private GameObject testObject,initialCircle;
 
@@ -79,6 +79,14 @@ public class CreateBasePlane : MonoBehaviour
         if (arRaycastManager.Raycast(touchPosition,hits,UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
         {
             SetTouchPositionAndPlane();
+        }
+        if(planeSelected == null)
+        {
+            setPlaneButton.interactable = false;
+        }
+        else
+        {
+            setPlaneButton.interactable = true;
         }
     }
     //平面選択

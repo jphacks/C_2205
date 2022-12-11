@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TapEffect : MonoBehaviour
 {
-    private ParticleSystem particleSystem;
-    private Camera camera;
+    private ParticleSystem myPS;
+    private Camera myCam;
     // Start is called before the first frame update
     void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
-        camera = Camera.main;
+        myPS = GetComponent<ParticleSystem>();
+        myCam = Camera.main;
     }
 
     // Update is called once per frame
@@ -23,8 +23,8 @@ public class TapEffect : MonoBehaviour
             {
                 Vector3 touchposition = touch.position;
                 touchposition.z = 10;
-                transform.position = camera.ScreenToWorldPoint(touchposition);
-                particleSystem.Play();
+                transform.position = myCam.ScreenToWorldPoint(touchposition);
+                myPS.Play();
             }
         }
     }
