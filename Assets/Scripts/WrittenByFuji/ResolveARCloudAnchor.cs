@@ -72,19 +72,19 @@ public class ResolveARCloudAnchor : MonoBehaviour
             debugText.text = "呼び出し成功!\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
             anchorResolveInProgress = false;
             cloudAnchorTransform = Instantiate(resolveObject, cloudAnchorResolved.transform.position, cloudAnchorResolved.transform.rotation).transform;
-            yield return new WaitForSeconds(2);
+            yield return null;
             // NCMBから壁座標を取得してlineRendererに反映
             pointsNCMBScript.ReceiveWallPoints(cloudAnchorTransform.position, cloudAnchorTransform.eulerAngles);
             anchorPosTemp = cloudAnchorTransform.position;
-            yield return new WaitForSeconds(1);
-            InvokeRepeating("AdjustPosition", 0, 5);
+            yield return null;
+            //InvokeRepeating("AdjustPosition", 0, 5);
 
             //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
-            shareAura.cloudAnchorPos = cloudAnchorResolved.transform.position;
-            shareAura.cloudAnchorRot = cloudAnchorResolved.transform.rotation.eulerAngles;
-            shareAura.auraGenerator.position = cloudAnchorResolved.transform.position;
-            shareAura.auraGenerator.rotation = cloudAnchorResolved.transform.rotation;
-            shareAura.SetDebugAxis(cloudAnchorResolved.transform.position, cloudAnchorResolved.transform.rotation.eulerAngles);
+            shareAura.cloudAnchorPos = cloudAnchorTransform.position;
+            shareAura.cloudAnchorRot = cloudAnchorTransform.rotation.eulerAngles;
+            shareAura.auraGenerator.position = cloudAnchorTransform.position;
+            shareAura.auraGenerator.rotation = cloudAnchorTransform.rotation;
+            shareAura.SetDebugAxis(cloudAnchorTransform.position, cloudAnchorTransform.rotation.eulerAngles);
             switchToVR.switchToVRButton.gameObject.SetActive(true);
             //視界の左下のテキスト
             VRdebugText.text = $"X:{cloudAnchorResolved.transform.rotation.x}\nY:{cloudAnchorResolved.transform.rotation.y}\nZ:{cloudAnchorResolved.transform.rotation.z}";
