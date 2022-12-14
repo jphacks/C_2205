@@ -14,16 +14,17 @@ public class ResolveARCloudAnchor : MonoBehaviour
     private ARCloudAnchor cloudAnchorResolved = null;
     private float safeToResolvePassed = 0;
     private float resolveAnchorPassedTimeout = 5.0f;
-    private string anchorIDtoResolve;
     private bool anchorResolveInProgress = false;
     [SerializeField] private GameObject resolveObject;
-    private Transform resolvedObject;
-    [SerializeField] private TextMeshProUGUI debugText,VRdebugText;
+    [SerializeField] private TextMeshProUGUI debugText, VRdebugText;
     NCMBObject resolveIDClass;
     [SerializeField]
     private WallPointsNCMBScript pointsNCMBScript;
     [SerializeField] private ShareAura shareAura;
     [SerializeField] private SwitchToVR switchToVR;
+    [SerializeField] private Transform lineRendererTransform, DEBUGlineRenderer;
+    private Transform cloudAnchorTransform = null;
+    private Vector3 anchorPosTemp = Vector3.zero;
     private void Awake()
     {
         //NCMB上のIDの場所を特定
@@ -41,7 +42,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
         debugText.text = "呼び出し中…";
         resolveIDClass.FetchAsync((NCMBException e) =>
         {
-            if(e != null)
+            if (e != null)
             {
                 debugText.text = "エラー発生:" + e;
             }
@@ -59,10 +60,10 @@ public class ResolveARCloudAnchor : MonoBehaviour
                 }
             }
         });
-        
+
     }
     //呼び出し作業の監督
-    public void CheckResolveProgress()
+    IEnumerator CheckResolveProgress()
     {
         CloudAnchorState cloudAnchorState = cloudAnchorResolved.cloudAnchorState;
         //成功したらその場所に生成
@@ -70,9 +71,14 @@ public class ResolveARCloudAnchor : MonoBehaviour
         {
             debugText.text = "呼び出し成功!\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
             anchorResolveInProgress = false;
-            resolvedObject = Instantiate(resolveObject, cloudAnchorResolved.transform).transform;
+            cloudAnchorTransform = Instantiate(resolveObject, cloudAnchorResolved.transform.position, cloudAnchorResolved.transform.rotation).transform;
+            yield return new WaitForSeconds(2);
             // NCMBから壁座標を取得してlineRendererに反映
-            pointsNCMBScript.ReceiveWallPoints(resolvedObject.position, cloudAnchorResolved.transform.eulerAngles);
+            pointsNCMBScript.ReceiveWallPoints(cloudAnchorTransform.position, cloudAnchorTransform.eulerAngles);
+            anchorPosTemp = cloudAnchorTransform.position;
+            yield return new WaitForSeconds(1);
+            InvokeRepeating("AdjustPosition", 0, 5);
+
             //気配共有の基準にすべくPosition,Rotationを渡し、オーラ発生オブジェクトの親をアンカーと同じ位置、角度にする
             shareAura.cloudAnchorPos = cloudAnchorResolved.transform.position;
             shareAura.cloudAnchorRot = cloudAnchorResolved.transform.rotation.eulerAngles;
@@ -88,6 +94,7 @@ public class ResolveARCloudAnchor : MonoBehaviour
             debugText.text = $"呼び出し中の\nエラー: {cloudAnchorState}";
             anchorResolveInProgress = false;
         }
+        yield return null;
     }
     // Update is called once per frame
     void Update()
@@ -98,12 +105,29 @@ public class ResolveARCloudAnchor : MonoBehaviour
             safeToResolvePassed = resolveAnchorPassedTimeout;
             if (!string.IsNullOrEmpty(resolveIDClass["ResolveID"].ToString()))
             {
-                CheckResolveProgress();
+                StartCoroutine("CheckResolveProgress");
             }
         }
         else
         {
             safeToResolvePassed -= Time.deltaTime * 1.0f;
+        }
+    }
+    void AdjustPosition()
+    {
+        //保存したアンカーの位置V3と現在のアンカー位置V3の距離が10cm未満ならreturn
+        if (Vector3.Distance(anchorPosTemp, cloudAnchorTransform.transform.position) < 0.1f)
+        {
+            debugText.text = Vector3.Distance(anchorPosTemp, cloudAnchorTransform.transform.position).ToString();
+            return;
+        }
+        //そうでないならLineRendererのオブジェクトの位置を差分だけ移動させ、保存を更新
+        else
+        {
+            shareAura.SetDebugAxis(cloudAnchorTransform.position, cloudAnchorTransform.rotation.eulerAngles);
+            debugText.text = Vector3.Distance(lineRendererTransform.position, cloudAnchorTransform.transform.position).ToString();
+            lineRendererTransform.position = lineRendererTransform.position + (cloudAnchorTransform.transform.position - anchorPosTemp);
+            anchorPosTemp = cloudAnchorTransform.transform.position;
         }
     }
 }

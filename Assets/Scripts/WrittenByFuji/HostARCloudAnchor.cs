@@ -10,7 +10,6 @@ using NCMB;
 public class HostARCloudAnchor : MonoBehaviour
 {
     [SerializeField] private Button hostButton;
-    [SerializeField] private Camera arCamera = null;
     private ARAnchorManager arAnchorManager = null;
     [HideInInspector] public ARAnchor pendingHostAnchor = null;
     private ARCloudAnchor cloudAnchorHosted = null;
@@ -18,9 +17,11 @@ public class HostARCloudAnchor : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI debugText,VRdebugText;
 
+    [SerializeField] private UIEnableScript UIManager;
+
+    [SerializeField] private LineRenderingTest wallLineScript;
     [SerializeField] private WallPointsNCMBScript pointsNCMBScript;
 
-    [SerializeField] private SwitchToVR switchToVR;
     [SerializeField] private ShareAura shareAura;
     [HideInInspector] public GameObject anchorObject, initialCircle;
 
@@ -60,10 +61,10 @@ public class HostARCloudAnchor : MonoBehaviour
         CloudAnchorState cloudAnchorState = cloudAnchorHosted.cloudAnchorState;
         if (cloudAnchorState == CloudAnchorState.Success)
         {
-            debugText.text = "アップロード成功!\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
+            debugText.text = "アップロード成功!";//\nゲームスタートした後\nゴーグルをつけて\n戦いを始めよう。";
             anchorHostInProgress = false;
-            //NCMBに壁座標データを送信
-            pointsNCMBScript.HostPointsData(cloudAnchorHosted.transform.position);
+            //LineRendererを持つオブジェクトの位置をクラウドアンカーに合わせる
+            //lineRendererTransform.position = cloudAnchorHosted.transform.position;
             //NCMBに呼び出し用のIDをアップロード
             resolveIDClass["ResolveID"] = cloudAnchorHosted.cloudAnchorId;
             resolveIDClass.SaveAsync();
@@ -73,13 +74,13 @@ public class HostARCloudAnchor : MonoBehaviour
             shareAura.auraGenerator.position = cloudAnchorHosted.transform.position;
             shareAura.auraGenerator.rotation = cloudAnchorHosted.transform.rotation;
             shareAura.SetDebugAxis(cloudAnchorHosted.transform.position, cloudAnchorHosted.transform.rotation.eulerAngles);
-            switchToVR.switchToVRButton.gameObject.SetActive(true);
+            UIManager.SetRenderLineState();
             //視界の左下のテキスト
             VRdebugText.text = $"X:{cloudAnchorHosted.transform.rotation.x}\nY:{cloudAnchorHosted.transform.rotation.y}\nZ:{cloudAnchorHosted.transform.rotation.z}";
             if (anchorObject!= null && initialCircle != null)
             {
                 anchorObject.SetActive(false);
-                initialCircle.SetActive(false);
+                initialCircle.GetComponent<MeshRenderer>().enabled = false;
             }
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
@@ -96,6 +97,16 @@ public class HostARCloudAnchor : MonoBehaviour
         {
             CheckHostingProgress();
             return;
+        }
+        //アンカーをアップしていない、または現在のLineRenderer位置V3と現在のアンカー位置V3が10cm未満ならreturn
+        if (cloudAnchorHosted == null || Vector3.Distance(wallLineScript.uploadBasePosition, cloudAnchorHosted.transform.position) < .1f)
+        {
+            return;
+        }
+        //そうでないならLineRendererのオブジェクトの位置をクラウドアンカーに合わせる
+        else
+        {
+            wallLineScript.uploadBasePosition = cloudAnchorHosted.transform.position;
         }
     }
 }

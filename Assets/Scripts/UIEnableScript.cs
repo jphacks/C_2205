@@ -13,8 +13,8 @@ public class UIEnableScript : MonoBehaviour
     {
         DetectPlane,
         AdjustPlane,
-        RenderLine,
         ShareAnchor,
+        RenderLine,
     }
 
     //Inspector‚É•\Ž¦‚³‚ê‚é
