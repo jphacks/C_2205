@@ -112,7 +112,7 @@ public class LineRenderingTest : MonoBehaviour
         // ‘Š‘ÎÀ•W‚É•ÏŠ·
         for (int i=0; i<linePoints.Length; i++)
         {
-            linePoints[i] -= basepoint;
+            // linePoints[i] -= basepoint;
             tM.text += linePoints[i] + "\n";
         }
         return linePoints;
@@ -130,7 +130,7 @@ public class LineRenderingTest : MonoBehaviour
         // â‘ÎÀ•W‚É•ÏŠ·
         for (int i = 0; i < points.Length; i++)
         {
-            points[i] += basepoint;
+            // points[i] += basepoint;
             tM.text += points[i] + "\n";
         }
         
