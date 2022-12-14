@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using TMPro;
 
 public class LineRenderingTest : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class LineRenderingTest : MonoBehaviour
 
     [SerializeField]
     private bool m_hasUpdatefunction = true;
+
+    [SerializeField]
+    private TextMeshProUGUI tM;
 
     private bool m_isHold; // ボタンを押し続けているかどうか
 
@@ -93,41 +97,6 @@ public class LineRenderingTest : MonoBehaviour
         m_wallPointsNCMBScript.HostWallPoints(ExportLinePoints(uploadBasePosition));
     }
 
-    /*
-     * 使わぬなら
-     * さすがに残すな
-     * あぁかいぶ
-     * 
-    /// <summary>
-    /// ボタンの長押しし始めの処理
-    /// </summary>
-    public void OnButtonDown()
-    {
-        m_isHold = true;
-        StartCoroutine(RenderingCoroutine());
-    }
-
-    /// <summary>
-    /// 長押しをやめた時の処理
-    /// </summary>
-    public void OnButtonUp()
-    {
-        m_isHold = false;
-    }
-
-    /// <summary>
-    /// 長押し中に呼び出されるコルーチン
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator RenderingCoroutine()
-    {      
-        while (m_isHold)
-        {
-            RenderingNextPoint();
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-    */
     #endregion
 
     /// <summary>
@@ -144,6 +113,7 @@ public class LineRenderingTest : MonoBehaviour
         for (int i=0; i<linePoints.Length; i++)
         {
             linePoints[i] -= basepoint;
+            tM.text += linePoints[i] + "\n";
         }
         return linePoints;
     }
@@ -161,55 +131,11 @@ public class LineRenderingTest : MonoBehaviour
         for (int i = 0; i < points.Length; i++)
         {
             points[i] += basepoint;
+            tM.text += points[i] + "\n";
         }
         
         m_lineRenderer.positionCount = points.Length;
         m_lineRenderer.SetPositions(points);
         m_lineRenderer.gameObject.transform.eulerAngles = eulerangles;
     }
-
-    /*
-     * 引数が違うからって
-     * さすがに関数名まで同じはしんどい
-     * ほととぎす
-
-    /// <summary>
-    /// linerendererの絶対座標配列を出力
-    /// </summary>
-    /// <returns></returns>
-    public Vector3[] ExportLinePoints()
-    {
-        Vector3[] linePoints = new Vector3[m_lineRenderer.positionCount];
-        m_lineRenderer.GetPositions(linePoints);
-        return linePoints;
-    }
-
-    /// <summary>
-    /// linerendererの相対ベクトル配列を取得し、適用
-    /// </summary>
-    /// <param name="points"></param>
-    /// <param name="basepoint">壁表示の基準となる空間座標</param>
-    public void SetImportedPoints(Vector3[] points, Vector3 basepoint)
-    {
-        // 絶対座標に変換
-        for (int i = 0; i < points.Length; i++)
-        {
-            points[i] += basepoint;
-        }
-        m_lineRenderer.positionCount = points.Length;
-        m_lineRenderer.SetPositions(points);
-    }
-
-    
-
-    /// <summary>
-    /// linerendererの絶対座標配列を取得し、適用
-    /// </summary>
-    /// <param name="points"></param>
-    public void SetImportedPoints(Vector3[] points)
-    {
-        m_lineRenderer.positionCount = points.Length;
-        m_lineRenderer.SetPositions(points);
-    }
-    */
 }
